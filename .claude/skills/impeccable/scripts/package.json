@@ -1,0 +1,24 @@
+{
+  "name": "side_hustle",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://local_proxy@127.0.0.1:43951/git/wsuwalt08/Side_Hustle"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "css-select": "^7.0.0",
+    "css-tree": "^3.2.1",
+    "domutils": "^4.0.2",
+    "fflate": "^0.8.3",
+    "htmlparser2": "^12.0.0",
+    "marked": "^18.0.5"
+  }
+}
