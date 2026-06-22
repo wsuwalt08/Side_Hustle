@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Downtime Cost Calculator | ShopFloor Visibility</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:      #0E1117;
+  --panel:   #141923;
+  --panel2:  #1A2237;
+  --panel3:  #1F2940;
+  --border:  rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.12);
+  --amber:   #F59E0B;
+  --amber2:  #FCD34D;
+  --red:     #EF4444;
+  --blue:    #3B82F6;
+  --blue-l:  #60A5FA;
+  --green:   #22C55E;
+  --slate:   #94A3B8;
+  --white:   #F8FAFC;
+  --t1:      #E2E8F0;
+  --t2:      #94A3B8;
+  --t3:      #4B5E7A;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--t1);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+/* ── NAV STRIP ── */
+.nav-strip {
+  border-bottom: 1px solid var(--border);
+  padding: 14px 28px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(14,17,23,0.95);
+  backdrop-filter: blur(12px);
+  position: sticky; top: 0; z-index: 50;
+}
+.nav-brand { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 600; color: var(--white); text-decoration: none; letter-spacing: -.01em; }
+.nav-back { font-size: 13px; color: var(--t2); text-decoration: none; display: flex; align-items: center; gap: 6px; transition: color .15s; }
+.nav-back:hover { color: var(--t1); }
+
+/* ── PAGE LAYOUT ── */
+.page {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 60px 28px 80px;
+}
+
+/* ── HEADER ── */
+.calc-header { text-align: center; margin-bottom: 56px; }
+.calc-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--amber); margin-bottom: 18px;
+}
+.calc-eyebrow::before, .calc-eyebrow::after {
+  content: ''; flex: 1; height: 1px; background: rgba(245,158,11,.3); width: 32px;
+}
+.calc-header h1 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(32px, 5vw, 52px);
+  font-weight: 700; letter-spacing: -1.5px; color: var(--white);
+  line-height: 1.05; margin-bottom: 16px;
+}
+.calc-header h1 em { font-style: normal; color: var(--amber); }
+.calc-header p { font-size: 17px; color: var(--t2); max-width: 520px; margin: 0 auto; line-height: 1.65; }
+
+/* ── MAIN GRID ── */
+.calc-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+/* ── INPUT PANEL ── */
+.input-panel {
+  background: var(--panel);
+  border: 1px solid var(--border2);
+  border-radius: 14px;
+  overflow: hidden;
+}
+.panel-header {
+  background: var(--panel2);
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+}
+.panel-dot { width: 8px; height: 8px; border-radius: 50%; }
+.panel-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--t2); margin-left: 4px;
+}
+.panel-body { padding: 28px 24px; display: flex; flex-direction: column; gap: 28px; }
+
+/* ── SLIDER INPUTS ── */
+.input-group { }
+.input-label-row {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin-bottom: 10px;
+}
+.input-label {
+  font-size: 13px; font-weight: 500; color: var(--t1);
+}
+.input-val {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 20px; font-weight: 700; color: var(--amber);
+  letter-spacing: -.5px; min-width: 80px; text-align: right;
+  transition: color .2s;
+}
+.input-val.high { color: var(--red); }
+
+.slider-track-wrap { position: relative; }
+input[type=range] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 4px;
+  background: var(--border2);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: var(--amber);
+  border: 3px solid var(--panel);
+  box-shadow: 0 0 0 1px var(--amber), 0 2px 8px rgba(245,158,11,.4);
+  cursor: pointer;
+  transition: box-shadow .15s, transform .15s;
+}
+input[type=range]::-webkit-slider-thumb:hover {
+  box-shadow: 0 0 0 3px rgba(245,158,11,.2), 0 2px 12px rgba(245,158,11,.5);
+  transform: scale(1.1);
+}
+input[type=range]::-moz-range-thumb {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: var(--amber);
+  border: 3px solid var(--panel);
+  cursor: pointer;
+}
+.slider-fill {
+  position: absolute;
+  top: 50%; transform: translateY(-50%);
+  height: 4px; border-radius: 2px;
+  background: linear-gradient(90deg, var(--amber), var(--amber2));
+  pointer-events: none;
+  transition: width .05s;
+}
+.input-sublabel { font-size: 12px; color: var(--t3); margin-top: 7px; }
+
+/* ── SEPARATOR ── */
+.input-sep {
+  border: none; border-top: 1px solid var(--border);
+  margin: 4px 0;
+}
+
+/* ── OUTPUT PANEL ── */
+.output-panel {
+  display: flex; flex-direction: column; gap: 16px;
+}
+
+/* ── COST METER ── */
+.meter-card {
+  background: var(--panel);
+  border: 1px solid var(--border2);
+  border-radius: 14px;
+  padding: 28px 28px 24px;
+  position: relative;
+  overflow: hidden;
+}
+.meter-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--amber), transparent);
+  opacity: 0;
+  transition: opacity .4s;
+}
+.meter-card.active::before { opacity: 1; }
+
+.meter-label {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11px; font-weight: 600; letter-spacing: .09em; text-transform: uppercase;
+  color: var(--t3); margin-bottom: 6px;
+}
+.meter-number {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(40px, 6vw, 64px);
+  font-weight: 700;
+  letter-spacing: -2px;
+  color: var(--amber);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  transition: color .3s;
+  margin-bottom: 4px;
+}
+.meter-number.danger { color: var(--red); }
+.meter-period { font-size: 13px; color: var(--t3); margin-bottom: 20px; }
+
+/* gauge bar */
+.gauge-wrap { margin-bottom: 6px; }
+.gauge-track {
+  height: 8px; background: var(--border); border-radius: 4px; overflow: hidden;
+}
+.gauge-fill {
+  height: 100%; border-radius: 4px;
+  background: linear-gradient(90deg, var(--green), var(--amber), var(--red));
+  transition: width .3s cubic-bezier(.4,0,.2,1);
+  width: 0%;
+}
+.gauge-labels {
+  display: flex; justify-content: space-between; margin-top: 5px;
+  font-size: 10px; color: var(--t3);
+}
+
+/* ── BREAKDOWN CARDS ── */
+.breakdown-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+}
+.bk-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 18px;
+}
+.bk-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .07em; color: var(--t3); margin-bottom: 6px; }
+.bk-val {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 24px; font-weight: 700; color: var(--white);
+  letter-spacing: -.5px; font-variant-numeric: tabular-nums;
+  transition: color .2s;
+}
+.bk-val.amber { color: var(--amber); }
+.bk-val.red   { color: var(--red); }
+.bk-val.green { color: var(--green); }
+.bk-sub { font-size: 12px; color: var(--t3); margin-top: 3px; }
+
+/* ── PAYBACK VISUAL ── */
+.payback-card {
+  background: var(--panel);
+  border: 1px solid var(--border2);
+  border-radius: 14px;
+  padding: 22px 24px;
+}
+.payback-header {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  margin-bottom: 16px;
+}
+.payback-title { font-size: 13px; font-weight: 500; color: var(--t1); }
+.payback-days {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 26px; font-weight: 700; color: var(--green);
+  letter-spacing: -.5px; text-align: right; line-height: 1;
+}
+.payback-days-sub { font-size: 11px; color: var(--t3); text-align: right; }
+
+.bar-compare { display: flex; flex-direction: column; gap: 8px; }
+.bar-row { display: flex; align-items: center; gap: 10px; }
+.bar-row-label { font-size: 12px; color: var(--t2); width: 70px; flex-shrink: 0; text-align: right; }
+.bar-track { flex: 1; height: 10px; background: var(--border); border-radius: 5px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 5px; transition: width .4s cubic-bezier(.4,0,.2,1); }
+.bar-fill.pilot { background: var(--blue); width: 0%; }
+.bar-fill.annual { background: var(--red); width: 0%; }
+.bar-row-val {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12px; font-weight: 600;
+  color: var(--t2); width: 72px; text-align: left;
+  font-variant-numeric: tabular-nums;
+  transition: color .2s;
+}
+
+/* ── CTA ── */
+.cta-card {
+  background: linear-gradient(135deg, #0f1e3d 0%, #1a2440 100%);
+  border: 1px solid rgba(59,130,246,.3);
+  border-radius: 14px;
+  padding: 28px 24px;
+  text-align: center;
+}
+.cta-card p {
+  font-size: 14px; color: var(--t2); line-height: 1.6; margin-bottom: 20px;
+}
+.cta-card p strong { color: var(--t1); font-weight: 600; }
+.cta-btn {
+  display: inline-block;
+  background: var(--amber);
+  color: #0E1117;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 15px; font-weight: 700;
+  padding: 14px 28px; border-radius: 8px;
+  text-decoration: none;
+  transition: opacity .15s, transform .15s;
+  box-shadow: 0 4px 20px rgba(245,158,11,.35);
+  line-height: 1.3;
+  cursor: pointer; border: none;
+}
+.cta-btn:hover { opacity: .9; transform: translateY(-1px); }
+.cta-note { margin-top: 12px; font-size: 12px; color: var(--t3); }
+
+/* ── INSIGHT BOX ── */
+.insight-box {
+  background: rgba(245,158,11,.06);
+  border: 1px solid rgba(245,158,11,.18);
+  border-radius: 10px;
+  padding: 16px 18px;
+  font-size: 13px; color: var(--t2); line-height: 1.6;
+  display: none;
+}
+.insight-box.show { display: block; }
+.insight-box strong { color: var(--amber); font-weight: 600; }
+
+/* ── METHODOLOGY ── */
+.method-note {
+  margin-top: 40px;
+  border-top: 1px solid var(--border);
+  padding-top: 24px;
+  font-size: 12px; color: var(--t3); line-height: 1.7;
+  text-align: center; max-width: 640px; margin-left: auto; margin-right: auto;
+}
+.method-note a { color: var(--t2); text-decoration: underline; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 780px) {
+  .calc-grid { grid-template-columns: 1fr; }
+  .breakdown-grid { grid-template-columns: 1fr 1fr; }
+  .page { padding: 40px 18px 60px; }
+}
+@media (max-width: 480px) {
+  .breakdown-grid { grid-template-columns: 1fr; }
+  .meter-number { font-size: 44px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav-strip">
+  <a href="index.html" class="nav-brand">ShopFloor Visibility</a>
+  <a href="index.html" class="nav-back">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <path d="M9 11L5 7l4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Back to site
+  </a>
+</nav>
+
+<div class="page">
+
+  <div class="calc-header">
+    <div class="calc-eyebrow">Free Tool &nbsp;·&nbsp; No email required</div>
+    <h1>What is untracked downtime<br>actually <em>costing your shop?</em></h1>
+    <p>Move the sliders to match your operation. See your real weekly and annual loss — and how fast a visibility pilot pays for itself.</p>
+  </div>
+
+  <div class="calc-grid">
+
+    <!-- INPUTS -->
+    <div class="input-panel">
+      <div class="panel-header">
+        <div class="panel-dot" style="background:#ef4444"></div>
+        <div class="panel-dot" style="background:#f59e0b"></div>
+        <div class="panel-dot" style="background:#22c55e"></div>
+        <div class="panel-title">Your shop · Line 1 pilot</div>
+      </div>
+      <div class="panel-body">
+
+        <!-- Shifts -->
+        <div class="input-group">
+          <div class="input-label-row">
+            <label class="input-label" for="s-shifts">Shifts per day</label>
+            <div class="input-val" id="v-shifts">2</div>
+          </div>
+          <div class="slider-track-wrap">
+            <div class="slider-fill" id="f-shifts"></div>
+            <input type="range" id="s-shifts" min="1" max="3" step="1" value="2">
+          </div>
+          <div class="input-sublabel">1 shift · 2 shifts · 3 shifts</div>
+        </div>
+
+        <!-- Downtime hours -->
+        <div class="input-group">
+          <div class="input-label-row">
+            <label class="input-label" for="s-downtime">Unplanned downtime per week</label>
+            <div class="input-val" id="v-downtime">4 hrs</div>
+          </div>
+          <div class="slider-track-wrap">
+            <div class="slider-fill" id="f-downtime"></div>
+            <input type="range" id="s-downtime" min="1" max="40" step="1" value="4">
+          </div>
+          <div class="input-sublabel">Hours lost to stops, jams, waits, and changeovers you can't fully explain</div>
+        </div>
+
+        <!-- Labor rate -->
+        <div class="input-group">
+          <div class="input-label-row">
+            <label class="input-label" for="s-labor">Fully-loaded labor rate</label>
+            <div class="input-val" id="v-labor">$55/hr</div>
+          </div>
+          <div class="slider-track-wrap">
+            <div class="slider-fill" id="f-labor"></div>
+            <input type="range" id="s-labor" min="20" max="200" step="5" value="55">
+          </div>
+          <div class="input-sublabel">Wages + benefits + overhead burden per operator-hour on this line</div>
+        </div>
+
+        <hr class="input-sep">
+
+        <!-- Operators on line -->
+        <div class="input-group">
+          <div class="input-label-row">
+            <label class="input-label" for="s-ops">Operators on this line</label>
+            <div class="input-val" id="v-ops">4</div>
+          </div>
+          <div class="slider-track-wrap">
+            <div class="slider-fill" id="f-ops"></div>
+            <input type="range" id="s-ops" min="1" max="20" step="1" value="4">
+          </div>
+          <div class="input-sublabel">Number of direct labor headcount affected when the line stops</div>
+        </div>
+
+        <!-- Reject rate -->
+        <div class="input-group">
+          <div class="input-label-row">
+            <label class="input-label" for="s-rejects">Estimated reject / scrap rate</label>
+            <div class="input-val" id="v-rejects">3%</div>
+          </div>
+          <div class="slider-track-wrap">
+            <div class="slider-fill" id="f-rejects"></div>
+            <input type="range" id="s-rejects" min="0.5" max="20" step="0.5" value="3">
+          </div>
+          <div class="input-sublabel">% of parts that fail QC, are reworked, or scrapped</div>
+        </div>
+
+        <!-- Parts per shift -->
+        <div class="input-group">
+          <div class="input-label-row">
+            <label class="input-label" for="s-parts">Parts produced per shift</label>
+            <div class="input-val" id="v-parts">500</div>
+          </div>
+          <div class="slider-track-wrap">
+            <div class="slider-fill" id="f-parts"></div>
+            <input type="range" id="s-parts" min="50" max="5000" step="50" value="500">
+          </div>
+          <div class="input-sublabel">Approximate good-part output on a typical shift</div>
+        </div>
+
+        <!-- Cost per part -->
+        <div class="input-group">
+          <div class="input-label-row">
+            <label class="input-label" for="s-cpart">Material cost per part</label>
+            <div class="input-val" id="v-cpart">$8</div>
+          </div>
+          <div class="slider-track-wrap">
+            <div class="slider-fill" id="f-cpart"></div>
+            <input type="range" id="s-cpart" min="1" max="500" step="1" value="8">
+          </div>
+          <div class="input-sublabel">Raw material / component cost per unit (scrapped material is pure loss)</div>
+        </div>
+
+        <!-- Insight box -->
+        <div class="insight-box" id="insight-box">
+          <strong>💡 Insight:</strong> <span id="insight-text"></span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- OUTPUTS -->
+    <div class="output-panel">
+
+      <!-- Main meter -->
+      <div class="meter-card" id="meter-card">
+        <div class="meter-label">Weekly production loss</div>
+        <div class="meter-number" id="meter-weekly">$0</div>
+        <div class="meter-period">per week, untracked and unrecovered</div>
+        <div class="gauge-wrap">
+          <div class="gauge-track"><div class="gauge-fill" id="gauge-fill"></div></div>
+          <div class="gauge-labels"><span>Manageable</span><span>Concerning</span><span>Critical</span></div>
+        </div>
+      </div>
+
+      <!-- Breakdown -->
+      <div class="breakdown-grid">
+        <div class="bk-card">
+          <div class="bk-label">Downtime loss / week</div>
+          <div class="bk-val" id="bk-downtime">—</div>
+          <div class="bk-sub">labor idled during stops</div>
+        </div>
+        <div class="bk-card">
+          <div class="bk-label">Scrap loss / week</div>
+          <div class="bk-val" id="bk-scrap">—</div>
+          <div class="bk-sub">material cost of rejected parts</div>
+        </div>
+        <div class="bk-card">
+          <div class="bk-label">Annual total loss</div>
+          <div class="bk-val red" id="bk-annual">—</div>
+          <div class="bk-sub">50 working weeks</div>
+        </div>
+        <div class="bk-card">
+          <div class="bk-label">Recoverable estimate</div>
+          <div class="bk-val green" id="bk-recover">—</div>
+          <div class="bk-sub">30–40% typically recoverable with visibility</div>
+        </div>
+      </div>
+
+      <!-- Payback -->
+      <div class="payback-card">
+        <div class="payback-header">
+          <div>
+            <div class="payback-title">Pilot payback period</div>
+            <div style="font-size:12px;color:var(--t3);margin-top:3px">at $7,000 pilot cost</div>
+          </div>
+          <div>
+            <div class="payback-days" id="payback-days">—</div>
+            <div class="payback-days-sub">weeks to break even</div>
+          </div>
+        </div>
+        <div class="bar-compare">
+          <div class="bar-row">
+            <div class="bar-row-label">Pilot cost</div>
+            <div class="bar-track"><div class="bar-fill pilot" id="bar-pilot"></div></div>
+            <div class="bar-row-val blue" id="barv-pilot" style="color:var(--blue-l)">$7,000</div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-row-label">Annual loss</div>
+            <div class="bar-track"><div class="bar-fill annual" id="bar-annual"></div></div>
+            <div class="bar-row-val red" id="barv-annual" style="color:var(--red)">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div class="cta-card">
+        <p id="cta-text">Move the sliders to match your shop — your personalized call-to-action appears here.</p>
+        <button class="cta-btn" id="cta-btn" onclick="window.location.href='mailto:robisonw08@gmail.com?subject=Fit call request&body=My estimated weekly production loss is ' + document.getElementById('meter-weekly').innerText">
+          Book a Call — Recover Your Losses
+        </button>
+        <div class="cta-note">15 minutes · No pitch deck · DFW area</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="method-note">
+    <strong>How this is calculated:</strong> Downtime loss = unplanned downtime hours × operators on line × fully-loaded labor rate. Scrap loss = parts per shift × shifts per day × 5 days × reject rate × material cost per part. Annual = weekly × 50 working weeks. Recoverable estimate = 35% of total annual loss, a conservative figure based on typical pilot outcomes. This calculator is for planning purposes — your actual numbers will vary.
+  </div>
+
+</div>
+
+<script>
+// ── STATE ──
+const PILOT_COST = 7000;
+let weekly = 0, annual = 0;
+
+// ── HELPERS ──
+function fmt(n) {
+  if (n >= 1000000) return '$' + (n/1000000).toFixed(1) + 'M';
+  if (n >= 1000)    return '$' + Math.round(n/1000) + 'k';
+  return '$' + Math.round(n);
+}
+function fmtFull(n) {
+  return '$' + Math.round(n).toLocaleString();
+}
+function lerp(a, b, t) { return a + (b - a) * t; }
+
+// ── SLIDER SETUP ──
+const sliders = [
+  { id: 's-shifts',  valId: 'v-shifts',  fillId: 'f-shifts',  format: v => v,         min: 1,   max: 3    },
+  { id: 's-downtime',valId: 'v-downtime',fillId: 'f-downtime', format: v => v+' hrs',   min: 1,   max: 40   },
+  { id: 's-labor',   valId: 'v-labor',   fillId: 'f-labor',   format: v => '$'+v+'/hr', min: 20,  max: 200  },
+  { id: 's-ops',     valId: 'v-ops',     fillId: 'f-ops',     format: v => v,           min: 1,   max: 20   },
+  { id: 's-rejects', valId: 'v-rejects', fillId: 'f-rejects', format: v => v+'%',       min: 0.5, max: 20   },
+  { id: 's-parts',   valId: 'v-parts',   fillId: 'f-parts',   format: v => parseInt(v).toLocaleString(), min: 50, max: 5000 },
+  { id: 's-cpart',   valId: 'v-cpart',   fillId: 'f-cpart',   format: v => '$'+v,       min: 1,   max: 500  },
+];
+
+function updateFill(slider, fillEl) {
+  const pct = (slider.value - slider.min) / (slider.max - slider.min) * 100;
+  fillEl.style.width = pct + '%';
+  // color the thumb via custom property
+  const hue = pct > 70 ? 'var(--red)' : 'var(--amber)';
+  slider.style.setProperty('--thumb-color', hue);
+}
+
+sliders.forEach(cfg => {
+  const slider = document.getElementById(cfg.id);
+  const valEl  = document.getElementById(cfg.valId);
+  const fillEl = document.getElementById(cfg.fillId);
+
+  // initial fill
+  updateFill(slider, fillEl);
+
+  slider.addEventListener('input', () => {
+    valEl.textContent = cfg.format(slider.value);
+    const pct = (slider.value - slider.min) / (slider.max - slider.min);
+    valEl.className = 'input-val' + (pct > 0.7 ? ' high' : '');
+    updateFill(slider, fillEl);
+    recalc();
+  });
+});
+
+// ── ANIMATED COUNTER ──
+let animFrame;
+let displayedWeekly = 0;
+
+function animateTo(target) {
+  cancelAnimationFrame(animFrame);
+  const start = displayedWeekly;
+  const diff  = target - start;
+  const dur   = 400;
+  let t0 = null;
+
+  function step(ts) {
+    if (!t0) t0 = ts;
+    const elapsed = ts - t0;
+    const progress = Math.min(elapsed / dur, 1);
+    const ease = 1 - Math.pow(1 - progress, 3);
+    displayedWeekly = start + diff * ease;
+    document.getElementById('meter-weekly').textContent = fmtFull(Math.round(displayedWeekly));
+    if (progress < 1) animFrame = requestAnimationFrame(step);
+  }
+  animFrame = requestAnimationFrame(step);
+}
+
+// ── RECALC ──
+function recalc() {
+  const shifts   = parseFloat(document.getElementById('s-shifts').value);
+  const dtHours  = parseFloat(document.getElementById('s-downtime').value);
+  const labor    = parseFloat(document.getElementById('s-labor').value);
+  const ops      = parseFloat(document.getElementById('s-ops').value);
+  const rejectPct= parseFloat(document.getElementById('s-rejects').value) / 100;
+  const parts    = parseFloat(document.getElementById('s-parts').value);
+  const cpart    = parseFloat(document.getElementById('s-cpart').value);
+
+  // weekly downtime labor cost
+  const downtimeLoss = dtHours * ops * labor;
+
+  // weekly scrap cost (parts per shift × shifts × 5 days × reject rate × cost per part)
+  const scrapLoss = parts * shifts * 5 * rejectPct * cpart;
+
+  weekly = downtimeLoss + scrapLoss;
+  annual = weekly * 50;
+
+  const recoverable = annual * 0.35;
+  const paybackWeeks = weekly > 0 ? (PILOT_COST / weekly).toFixed(1) : '—';
+
+  // animate main meter
+  animateTo(weekly);
+
+  // color state
+  const meterEl = document.getElementById('meter-weekly');
+  const meterCard = document.getElementById('meter-card');
+  if (weekly > 10000) {
+    meterEl.className = 'meter-number danger';
+    meterCard.classList.add('active');
+  } else if (weekly > 2000) {
+    meterEl.className = 'meter-number';
+    meterCard.classList.add('active');
+  } else {
+    meterEl.className = 'meter-number';
+    meterCard.classList.remove('active');
+  }
+
+  // gauge (caps at $20k/week for visual)
+  const gaugePct = Math.min(weekly / 20000 * 100, 100);
+  document.getElementById('gauge-fill').style.width = gaugePct + '%';
+
+  // breakdown
+  document.getElementById('bk-downtime').textContent = fmt(downtimeLoss);
+  document.getElementById('bk-downtime').className = 'bk-val' + (downtimeLoss > 5000 ? ' red' : downtimeLoss > 1000 ? ' amber' : '');
+  document.getElementById('bk-scrap').textContent = fmt(scrapLoss);
+  document.getElementById('bk-scrap').className = 'bk-val' + (scrapLoss > 5000 ? ' red' : scrapLoss > 1000 ? ' amber' : '');
+  document.getElementById('bk-annual').textContent = fmt(annual);
+  document.getElementById('bk-recover').textContent = fmt(recoverable);
+
+  // payback
+  if (weekly > 0) {
+    const pw = (PILOT_COST / weekly).toFixed(1);
+    document.getElementById('payback-days').textContent = pw;
+    document.getElementById('payback-days').style.color = pw < 4 ? 'var(--green)' : pw < 12 ? 'var(--amber)' : 'var(--t1)';
+  } else {
+    document.getElementById('payback-days').textContent = '—';
+  }
+
+  // comparison bars
+  const maxVal = Math.max(annual, PILOT_COST, 1);
+  document.getElementById('bar-pilot').style.width  = (PILOT_COST / maxVal * 100) + '%';
+  document.getElementById('bar-annual').style.width = Math.min(annual / maxVal * 100, 100) + '%';
+  document.getElementById('barv-annual').textContent = fmt(annual);
+
+  // insight
+  const insight = document.getElementById('insight-box');
+  const insightText = document.getElementById('insight-text');
+  let msg = '';
+
+  if (downtimeLoss > scrapLoss * 2) {
+    msg = `Your biggest loss is <strong>idle labor during downtime</strong> — ${Math.round(downtimeLoss/weekly*100)}% of your total weekly cost. Logging downtime reasons in real time typically recovers 30–45% of this within the first 60 days.`;
+  } else if (scrapLoss > downtimeLoss * 1.5) {
+    msg = `Your biggest loss is <strong>scrap and reject material cost</strong> — ${Math.round(scrapLoss/weekly*100)}% of your total. A reject Pareto by reason usually reveals 1–2 causes driving 60–70% of the waste.`;
+  } else if (weekly > 0) {
+    msg = `Your downtime and scrap losses are roughly balanced. Both are worth tracking — the dashboard will show which one is trending worse week over week.`;
+  }
+
+  if (msg && weekly > 0) {
+    insightText.innerHTML = msg;
+    insight.classList.add('show');
+  } else {
+    insight.classList.remove('show');
+  }
+
+  // CTA
+  const ctaText = document.getElementById('cta-text');
+  const ctaBtn  = document.getElementById('cta-btn');
+  if (weekly > 500) {
+    const lossStr = fmtFull(Math.round(weekly));
+    const annualStr = fmt(annual);
+    ctaText.innerHTML = `Your shop is losing an estimated <strong>${lossStr}/week</strong> — <strong>${annualStr}/year</strong> — in untracked downtime and scrap. A one-line pilot typically pays for itself in ${paybackWeeks} weeks.`;
+    ctaBtn.textContent = `Book a Call — Recover ${fmt(recoverable)}`;
+    ctaBtn.onclick = () => {
+      window.location.href = `mailto:robisonw08@gmail.com?subject=Fit call request — ${lossStr}/week loss&body=Hi Walt, I used the downtime calculator and my estimated weekly production loss is ${lossStr}. I'd like to book a 15-minute fit call.`;
+    };
+  } else {
+    ctaText.innerHTML = `Move the sliders to match your shop and see your personalized loss estimate and payback period.`;
+    ctaBtn.textContent = `Book a 15-Minute Fit Call`;
+    ctaBtn.onclick = () => { window.location.href = 'mailto:robisonw08@gmail.com'; };
+  }
+}
+
+// initial calc
+recalc();
+</script>
+</body>
+</html>
