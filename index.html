@@ -4,6 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ShopFloor Visibility | Real-Time Production Tracking Without the MES Price Tag</title>
+<meta name="description" content="Tablet-based production tracking and live dashboards for small manufacturers. Fixed price, no sensors, no IT project. Live in 2–3 weeks. Serving DFW area.">
+<meta property="og:title" content="ShopFloor Visibility | Real-Time Production Tracking">
+<meta property="og:description" content="See what's happening on your production floor in real time — without the MES price tag. Fixed $5k–$9.5k pilot, live in 2–3 weeks.">
+<meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
@@ -31,7 +35,7 @@
   --white:   #F8FAFC;
   --t1:      #E2E8F0;
   --t2:      #94A3B8;
-  --t3:      #4B5E7A;
+  --t3:      #6B7FA0;
 }
 
 html { scroll-behavior: smooth; }
@@ -46,7 +50,7 @@ body {
 
 /* ── NAV ── */
 nav {
-  position: sticky; top: 0; z-index: 100;
+  position: sticky; top: 0; z-index: 200;
   background: rgba(14,17,23,0.92);
   backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border);
@@ -71,6 +75,38 @@ nav {
 }
 .btn-cta:hover { opacity: .88; }
 
+/* hamburger */
+.nav-hamburger {
+  display: none; flex-direction: column; justify-content: center; gap: 5px;
+  background: none; border: none; cursor: pointer; padding: 8px; margin-right: -8px;
+}
+.nav-hamburger span {
+  display: block; width: 22px; height: 2px;
+  background: var(--t1); border-radius: 2px; transition: transform .2s, opacity .2s;
+}
+.nav-hamburger[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-hamburger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.nav-hamburger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* mobile drawer */
+.nav-drawer {
+  display: none; position: fixed; inset: 62px 0 0 0; z-index: 190;
+  background: rgba(14,17,23,0.98); backdrop-filter: blur(20px);
+  padding: 32px 28px; flex-direction: column; gap: 8px;
+  border-top: 1px solid var(--border);
+}
+.nav-drawer.open { display: flex; }
+.nav-drawer a {
+  font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 600;
+  color: var(--t1); text-decoration: none; padding: 12px 0;
+  border-bottom: 1px solid var(--border); transition: color .15s;
+}
+.nav-drawer a:hover { color: var(--amber); }
+.nav-drawer .btn-cta {
+  margin-top: 8px; font-size: 16px; padding: 14px 24px;
+  text-align: center; border-radius: 8px;
+}
+
 /* ── WRAP ── */
 .wrap { max-width: 1120px; margin: 0 auto; padding: 0 28px; }
 
@@ -94,13 +130,14 @@ nav {
 h1 {
   font-family: 'Space Grotesk', sans-serif;
   font-size: clamp(36px,5.8vw,62px); font-weight: 700;
-  line-height: 1.05; letter-spacing: -2px; color: var(--white); margin-bottom: 22px;
+  line-height: 1.05; letter-spacing: -0.03em; color: var(--white); margin-bottom: 22px;
+  text-wrap: balance;
 }
 h1 em { font-style: normal; color: var(--amber); }
 
 .hero-sub {
   font-size: 19px; color: var(--t2); line-height: 1.7;
-  max-width: 600px; margin: 0 auto 40px;
+  max-width: 600px; margin: 0 auto 40px; text-wrap: pretty;
 }
 .check-row { display: flex; justify-content: center; gap: 28px; flex-wrap: wrap; margin-bottom: 40px; }
 .check { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; color: var(--t1); }
@@ -174,7 +211,7 @@ h1 em { font-style: normal; color: var(--amber); }
 .stats-grid { display: grid; grid-template-columns: repeat(4,1fr); flex: 1; }
 .stat { text-align: center; padding: 16px 20px; border-right: 1px solid var(--border); }
 .stat:last-child { border-right: none; }
-.stat-v { font-family: 'Space Grotesk', sans-serif; font-size: 44px; font-weight: 700; color: var(--white); letter-spacing: -2px; line-height: 1; margin-bottom: 8px; }
+.stat-v { font-family: 'Space Grotesk', sans-serif; font-size: 44px; font-weight: 700; color: var(--white); letter-spacing: -0.04em; line-height: 1; margin-bottom: 8px; }
 .stat-v sup { font-size: 22px; vertical-align: super; color: var(--amber); }
 .stat-v sub { font-size: 22px; color: var(--amber); }
 .stat-l { font-size: 13px; color: var(--t2); line-height: 1.45; }
@@ -194,17 +231,13 @@ h1 em { font-style: normal; color: var(--amber); }
 
 /* ── SECTION BASE ── */
 section { padding: 80px 0; }
-.s-tag {
-  display: inline-block; font-family: 'Space Grotesk', sans-serif;
-  font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
-  color: var(--amber); margin-bottom: 14px;
-}
 .s-h {
   font-family: 'Space Grotesk', sans-serif;
   font-size: clamp(28px,3.8vw,44px); font-weight: 700;
-  letter-spacing: -1px; color: var(--white); margin-bottom: 14px; line-height: 1.1;
+  letter-spacing: -0.025em; color: var(--white); margin-bottom: 14px; line-height: 1.1;
+  text-wrap: balance;
 }
-.s-sub { font-size: 17px; color: var(--t2); max-width: 560px; line-height: 1.65; margin-bottom: 48px; }
+.s-sub { font-size: 17px; color: var(--t2); max-width: 560px; line-height: 1.65; margin-bottom: 48px; text-wrap: pretty; }
 
 /* ── VS COMPARISON ── */
 .vs-section { border-top: 1px solid var(--border); }
@@ -227,9 +260,14 @@ section { padding: 80px 0; }
 .features-section { border-top: 1px solid var(--border); }
 .feat-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: start; }
 .feat-tabs { display: flex; flex-direction: column; gap: 4px; }
-.feat-tab { padding: 18px 20px; border-radius: 8px; border: 1px solid transparent; cursor: pointer; transition: all .2s; }
+.feat-tab {
+  padding: 18px 20px; border-radius: 8px; border: 1px solid transparent;
+  cursor: pointer; transition: all .2s;
+  background: none; text-align: left; width: 100%; font-family: inherit;
+}
 .feat-tab:hover { background: var(--card); }
 .feat-tab.active { background: var(--card2); border-color: var(--border2); }
+.feat-tab:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
 .feat-tab-head { display: flex; align-items: center; gap: 12px; }
 .feat-tab.active .feat-tab-head { margin-bottom: 10px; }
 .feat-icon {
@@ -238,7 +276,7 @@ section { padding: 80px 0; }
 }
 .feat-tab.active .feat-icon { background: rgba(245,158,11,.2); }
 .feat-title { font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 600; color: var(--t1); }
-.feat-desc { font-size: 14px; color: var(--t2); line-height: 1.6; display: none; }
+.feat-desc { font-size: 14px; color: var(--t2); line-height: 1.6; display: none; text-wrap: pretty; }
 .feat-tab.active .feat-desc { display: block; }
 .feat-preview { position: sticky; top: 80px; background: var(--card); border: 1px solid var(--border2); border-radius: 12px; overflow: hidden; box-shadow: 0 8px 48px rgba(0,0,0,.5); }
 .fp-chrome { background: var(--card2); padding: 10px 14px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 6px; }
@@ -278,6 +316,13 @@ section { padding: 80px 0; }
 .exp-row { display: grid; grid-template-columns: repeat(5,1fr); gap: 4px; background: var(--bg2); border-radius: 4px; padding: 6px 8px; margin-bottom: 3px; }
 .exp-row span { font-size: 11px; color: var(--t2); font-variant-numeric: tabular-nums; }
 
+/* mobile feature stack */
+.feat-mobile-stack { display: none; flex-direction: column; gap: 16px; }
+.fms-item { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 20px; }
+.fms-head { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.fms-title { font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 600; color: var(--t1); }
+.fms-desc { font-size: 14px; color: var(--t2); line-height: 1.6; }
+
 /* ── TESTIMONIALS ── */
 .testimonials-section { border-top: 1px solid var(--border); }
 .t-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
@@ -287,7 +332,7 @@ section { padding: 80px 0; }
   font-family: 'Space Grotesk', sans-serif; font-size: 48px; line-height: 1;
   color: var(--amber); opacity: .25;
 }
-.t-quote { font-size: 15px; color: var(--t1); line-height: 1.65; margin-bottom: 20px; font-style: italic; padding-top: 18px; }
+.t-quote { font-size: 15px; color: var(--t1); line-height: 1.65; margin-bottom: 20px; font-style: italic; padding-top: 18px; text-wrap: pretty; }
 .t-person { display: flex; align-items: center; gap: 12px; }
 .t-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 700; color: var(--white); flex-shrink: 0; }
 .t-name { font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 600; color: var(--white); }
@@ -300,12 +345,12 @@ section { padding: 80px 0; }
 .outcome-block:nth-child(even) .outcome-text { order: 2; padding: 72px 0 72px 56px; }
 .outcome-block:nth-child(even) .outcome-stat { order: 1; padding: 72px 56px 72px 0; border-left: none; border-right: 1px solid var(--border); }
 .ot-tag { font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: var(--amber); margin-bottom: 16px; }
-.ot-h { font-family: 'Space Grotesk', sans-serif; font-size: clamp(22px,2.5vw,30px); font-weight: 700; color: var(--white); line-height: 1.2; margin-bottom: 14px; letter-spacing: -.5px; }
-.ot-p { font-size: 15px; color: var(--t2); line-height: 1.7; }
-.os-num { font-family: 'Space Grotesk', sans-serif; font-size: clamp(56px,7vw,88px); font-weight: 700; color: var(--white); letter-spacing: -3px; line-height: 1; margin-bottom: 8px; }
+.ot-h { font-family: 'Space Grotesk', sans-serif; font-size: clamp(22px,2.5vw,30px); font-weight: 700; color: var(--white); line-height: 1.2; margin-bottom: 14px; letter-spacing: -0.025em; text-wrap: balance; }
+.ot-p { font-size: 15px; color: var(--t2); line-height: 1.7; text-wrap: pretty; }
+.os-num { font-family: 'Space Grotesk', sans-serif; font-size: clamp(56px,7vw,88px); font-weight: 700; color: var(--white); letter-spacing: -0.04em; line-height: 1; margin-bottom: 8px; }
 .os-num span { color: var(--amber); }
-.os-label { font-size: 15px; color: var(--t2); margin-bottom: 24px; line-height: 1.5; }
-.os-quote { font-size: 15px; font-style: italic; color: var(--t1); line-height: 1.65; margin-bottom: 12px; }
+.os-label { font-size: 15px; color: var(--t2); margin-bottom: 24px; line-height: 1.5; text-wrap: pretty; }
+.os-quote { font-size: 15px; font-style: italic; color: var(--t1); line-height: 1.65; margin-bottom: 12px; text-wrap: pretty; }
 .os-attr { font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 600; color: var(--t3); }
 
 /* ── WHO ── */
@@ -313,10 +358,10 @@ section { padding: 80px 0; }
 .who-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
 .who-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 24px; transition: border-color .2s; }
 .who-card:hover { border-color: var(--amber-br); }
-.who-icon { font-size: 26px; margin-bottom: 12px; }
+.who-icon { width: 36px; height: 36px; margin-bottom: 14px; color: var(--amber); }
 .who-card h3 { font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 700; color: var(--white); margin-bottom: 8px; }
-.who-card p { font-size: 14px; color: var(--t2); line-height: 1.6; }
-.who-note { margin-top: 24px; background: var(--amber-bg); border: 1px solid var(--amber-br); border-radius: 8px; padding: 16px 20px; font-size: 14px; color: var(--t2); line-height: 1.6; }
+.who-card p { font-size: 14px; color: var(--t2); line-height: 1.6; text-wrap: pretty; }
+.who-note { margin-top: 24px; background: var(--amber-bg); border: 1px solid var(--amber-br); border-radius: 8px; padding: 16px 20px; font-size: 14px; color: var(--t2); line-height: 1.6; text-wrap: pretty; }
 .who-note strong { color: var(--amber); font-weight: 600; }
 
 /* ── TIERS ── */
@@ -328,14 +373,14 @@ section { padding: 80px 0; }
 .tier-pill { display: inline-block; font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 3px 10px; border-radius: 4px; margin-bottom: 16px; }
 .tier-pill.entry { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-br); }
 .tier-pill.advanced { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-br); }
-.tier-card h3 { font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 700; color: var(--white); margin-bottom: 10px; letter-spacing: -.4px; }
-.tier-desc { font-size: 15px; color: var(--t2); line-height: 1.65; margin-bottom: 22px; }
+.tier-card h3 { font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 700; color: var(--white); margin-bottom: 10px; letter-spacing: -0.025em; }
+.tier-desc { font-size: 15px; color: var(--t2); line-height: 1.65; margin-bottom: 22px; text-wrap: pretty; }
 .tier-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
 .tier-item { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; color: var(--t1); line-height: 1.4; }
 .tier-item svg { flex-shrink: 0; margin-top: 2px; }
 .tier-ideal { background: rgba(255,255,255,.03); border: 1px solid var(--border); border-radius: 6px; padding: 12px 16px; font-size: 13px; color: var(--t3); line-height: 1.55; }
 .tier-ideal strong { color: var(--t2); font-weight: 500; }
-.tier-bridge { margin-top: 24px; background: var(--amber-bg); border: 1px solid var(--amber-br); border-radius: 10px; padding: 20px 24px; font-size: 14px; color: var(--t2); line-height: 1.65; }
+.tier-bridge { margin-top: 24px; background: var(--amber-bg); border: 1px solid var(--amber-br); border-radius: 10px; padding: 20px 24px; font-size: 14px; color: var(--t2); line-height: 1.65; text-wrap: pretty; }
 .tier-bridge strong { color: var(--amber); font-weight: 600; }
 
 /* ── HOW ── */
@@ -351,9 +396,9 @@ section { padding: 80px 0; }
 .offer-section { border-top: 1px solid var(--border); }
 .offer-card { background: var(--card); border: 1px solid var(--border2); border-radius: 14px; padding: 44px; box-shadow: 0 12px 64px rgba(0,0,0,.5); display: grid; grid-template-columns: 1fr 1fr; gap: 52px; }
 .oc-tag { display: inline-block; background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-br); font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 4px; margin-bottom: 18px; }
-.oc-name { font-family: 'Space Grotesk', sans-serif; font-size: 24px; font-weight: 700; color: var(--white); margin-bottom: 6px; letter-spacing: -.5px; }
+.oc-name { font-family: 'Space Grotesk', sans-serif; font-size: 24px; font-weight: 700; color: var(--white); margin-bottom: 6px; letter-spacing: -0.025em; }
 .oc-desc { font-size: 14px; color: var(--t2); margin-bottom: 20px; }
-.oc-price { font-family: 'Space Grotesk', sans-serif; font-size: 40px; font-weight: 700; color: var(--amber); letter-spacing: -1.5px; margin-bottom: 4px; }
+.oc-price { font-family: 'Space Grotesk', sans-serif; font-size: 40px; font-weight: 700; color: var(--amber); letter-spacing: -0.04em; margin-bottom: 4px; }
 .oc-price-note { font-size: 13px; color: var(--t3); margin-bottom: 24px; }
 .oc-divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
 .dl-list { display: flex; flex-direction: column; gap: 10px; }
@@ -361,7 +406,7 @@ section { padding: 80px 0; }
 .dl svg { color: var(--green); flex-shrink: 0; margin-top: 1px; }
 .oc-excl { margin-top: 20px; background: rgba(255,255,255,.02); border: 1px solid var(--border); border-radius: 6px; padding: 14px 16px; font-size: 13px; color: var(--t3); line-height: 1.6; }
 .oc-excl strong { color: var(--t2); font-weight: 500; }
-.oc-right h3 { font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 700; color: var(--white); margin-bottom: 22px; letter-spacing: -.3px; }
+.oc-right h3 { font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 700; color: var(--white); margin-bottom: 22px; letter-spacing: -0.02em; }
 .sl { display: flex; gap: 16px; padding: 18px 0; border-bottom: 1px solid var(--border); }
 .sl:last-child { border-bottom: none; }
 .sl-n { width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0; background: var(--amber-bg); border: 1px solid var(--amber-br); color: var(--amber); font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
@@ -373,7 +418,7 @@ section { padding: 80px 0; }
 .faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 .fq { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 22px 24px; }
 .fq h3 { font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 700; color: var(--white); margin-bottom: 10px; }
-.fq p { font-size: 14px; color: var(--t2); line-height: 1.65; }
+.fq p { font-size: 14px; color: var(--t2); line-height: 1.65; text-wrap: pretty; }
 
 /* ── BOOK ── */
 .book-section {
@@ -407,7 +452,9 @@ footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 5
   .stats-inner { flex-direction: column; }
   .vs-grid { grid-template-columns: 1fr; }
   .feat-layout { grid-template-columns: 1fr; }
+  .feat-tabs { display: none; }
   .feat-preview { display: none; }
+  .feat-mobile-stack { display: flex; }
   .t-grid { grid-template-columns: 1fr; }
   .outcome-block { grid-template-columns: 1fr; }
   .outcome-block:nth-child(even) .outcome-text { order: 1; padding: 48px 0; }
@@ -422,7 +469,9 @@ footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 5
   .offer-card { grid-template-columns: 1fr; }
   .faq-grid { grid-template-columns: 1fr; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
+  /* hide desktop nav links, show hamburger */
   .nav-links a:not(.btn-cta) { display: none; }
+  .nav-hamburger { display: flex; }
 }
 @media (max-width: 600px) {
   .wrap { padding: 0 18px; }
@@ -448,15 +497,24 @@ footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 5
       <a href="#faq">FAQ</a>
       <a href="#book" class="btn-cta">Book a Call</a>
     </div>
+    <button class="nav-hamburger" aria-label="Open navigation" aria-expanded="false" aria-controls="navDrawer">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </nav>
+<div class="nav-drawer" id="navDrawer" role="dialog" aria-label="Navigation">
+  <a href="#features" class="nav-drawer-link">Features</a>
+  <a href="#offer" class="nav-drawer-link">Pricing</a>
+  <a href="#faq" class="nav-drawer-link">FAQ</a>
+  <a href="#book" class="btn-cta">Book a Call</a>
+</div>
 
 <!-- HERO -->
 <section class="hero">
   <div class="wrap">
     <div class="hero-inner">
-      <div class="hero-tag"><span class="dot"></span>Fixed-price pilot · DFW area · No PLC required</div>
-      <h1>Find hidden losses on<br>your shop floor — <em>fast.</em></h1>
+      <div class="hero-tag"><span class="dot"></span>Fixed-price pilot · DFW area · No sensors required</div>
+      <h1>Find hidden losses on your shop floor — <em>fast.</em></h1>
       <p class="hero-sub">Tablet-based production tracking and a live dashboard for one machine, line, or process. No MES. No sensors. No IT project. Fixed price.</p>
       <div class="check-row">
         <div class="check"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Live in 2–3 weeks</div>
@@ -518,7 +576,7 @@ footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 5
       <div class="stats-grid">
         <div class="stat"><div class="stat-v">2–3<sub>wks</sub></div><div class="stat-l">Signed agreement to live dashboard</div></div>
         <div class="stat"><div class="stat-v">$5<sup>k</sup></div><div class="stat-l">Starting fixed pilot fee</div></div>
-        <div class="stat"><div class="stat-v">0</div><div class="stat-l">PLC integrations required</div></div>
+        <div class="stat"><div class="stat-v">0</div><div class="stat-l">Sensors or integrations required</div></div>
         <div class="stat"><div class="stat-v">1</div><div class="stat-l">Process to prove value first</div></div>
       </div>
       <div class="calc-cta-band">
@@ -532,7 +590,6 @@ footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 5
 <!-- VS COMPARISON -->
 <section class="vs-section">
   <div class="wrap">
-    <div class="s-tag">Why not a platform?</div>
     <h2 class="s-h">MES and IoT platforms aren't built for your shop</h2>
     <p class="s-sub">Amper, Pulsar, and full MES systems are built for plants with IT staff, IoT budgets, and months to spare. Here's how this pilot compares.</p>
     <div class="vs-grid">
@@ -574,41 +631,41 @@ footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 5
 <!-- FEATURES -->
 <section class="features-section" id="features">
   <div class="wrap">
-    <div class="s-tag">Features</div>
     <h2 class="s-h">Everything you need to see what's happening</h2>
     <p class="s-sub">Built around the four things that matter: what ran, what stopped, what failed, and why.</p>
+    <!-- desktop: tabs + preview panel -->
     <div class="feat-layout">
-      <div class="feat-tabs" id="featTabs">
-        <div class="feat-tab active" data-panel="p1">
+      <div class="feat-tabs" id="featTabs" role="tablist">
+        <button class="feat-tab active" data-panel="p1" role="tab" aria-selected="true" aria-controls="p1">
           <div class="feat-tab-head">
             <div class="feat-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="3" y="9" width="3" height="6" fill="var(--amber)" rx="1"/><rect x="7.5" y="6" width="3" height="9" fill="var(--amber)" rx="1"/><rect x="12" y="3" width="3" height="12" fill="var(--amber)" rx="1"/></svg></div>
             <div class="feat-title">Tablet Production Entry</div>
           </div>
           <div class="feat-desc">Operators log good parts, reject parts, shift, product, and operator on a tablet during the shift — not from memory afterward. Fast buttons, simple layout, no training friction.</div>
-        </div>
-        <div class="feat-tab" data-panel="p2">
+        </button>
+        <button class="feat-tab" data-panel="p2" role="tab" aria-selected="false" aria-controls="p2">
           <div class="feat-tab-head">
             <div class="feat-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="6" stroke="var(--amber)" stroke-width="1.5"/><path d="M9 5.5V9.5l2.5 2.5" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round"/></svg></div>
             <div class="feat-title">Downtime Reason Buttons</div>
           </div>
           <div class="feat-desc">When the line stops, operators tap the reason in real time — not recalled at shift end. See a Pareto of top stop causes by shift, operator, and machine automatically.</div>
-        </div>
-        <div class="feat-tab" data-panel="p3">
+        </button>
+        <button class="feat-tab" data-panel="p3" role="tab" aria-selected="false" aria-controls="p3">
           <div class="feat-tab-head">
             <div class="feat-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 9h12M9 3v12" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round"/><circle cx="9" cy="9" r="6" stroke="var(--amber)" stroke-width="1.5"/></svg></div>
             <div class="feat-title">Live Dashboard</div>
           </div>
           <div class="feat-desc">A real-time shift dashboard on any screen — tablet, laptop, or wall TV. Production vs. target, top downtime reasons, reject rate, and efficiency by shift.</div>
-        </div>
-        <div class="feat-tab" data-panel="p4">
+        </button>
+        <button class="feat-tab" data-panel="p4" role="tab" aria-selected="false" aria-controls="p4">
           <div class="feat-tab-head">
             <div class="feat-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="3" y="3" width="12" height="12" rx="2" stroke="var(--amber)" stroke-width="1.5"/><path d="M3 7.5h12M7.5 7.5v7.5" stroke="var(--amber)" stroke-width="1.5"/></svg></div>
             <div class="feat-title">Export &amp; Reports</div>
           </div>
           <div class="feat-desc">Every entry is exportable to Excel or CSV. Daily or weekly summary reports included. A written improvement summary at pilot close — what the data shows, where to focus first.</div>
-        </div>
+        </button>
       </div>
-      <div class="feat-preview">
+      <div class="feat-preview" role="tabpanel">
         <div class="fp-chrome">
           <div class="fp-dot" style="background:#f87171"></div>
           <div class="fp-dot" style="background:#fbbf24"></div>
@@ -670,13 +727,43 @@ footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 5
         </div>
       </div>
     </div>
+    <!-- mobile: stacked cards -->
+    <div class="feat-mobile-stack">
+      <div class="fms-item">
+        <div class="fms-head">
+          <div class="feat-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="3" y="9" width="3" height="6" fill="var(--amber)" rx="1"/><rect x="7.5" y="6" width="3" height="9" fill="var(--amber)" rx="1"/><rect x="12" y="3" width="3" height="12" fill="var(--amber)" rx="1"/></svg></div>
+          <div class="fms-title">Tablet Production Entry</div>
+        </div>
+        <p class="fms-desc">Operators log good parts, reject parts, shift, product, and operator on a tablet during the shift — not from memory afterward. Fast buttons, simple layout, no training friction.</p>
+      </div>
+      <div class="fms-item">
+        <div class="fms-head">
+          <div class="feat-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="6" stroke="var(--amber)" stroke-width="1.5"/><path d="M9 5.5V9.5l2.5 2.5" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+          <div class="fms-title">Downtime Reason Buttons</div>
+        </div>
+        <p class="fms-desc">When the line stops, operators tap the reason in real time — not recalled at shift end. See a Pareto of top stop causes by shift, operator, and machine automatically.</p>
+      </div>
+      <div class="fms-item">
+        <div class="fms-head">
+          <div class="feat-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 9h12M9 3v12" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round"/><circle cx="9" cy="9" r="6" stroke="var(--amber)" stroke-width="1.5"/></svg></div>
+          <div class="fms-title">Live Dashboard</div>
+        </div>
+        <p class="fms-desc">A real-time shift dashboard on any screen — tablet, laptop, or wall TV. Production vs. target, top downtime reasons, reject rate, and efficiency by shift.</p>
+      </div>
+      <div class="fms-item">
+        <div class="fms-head">
+          <div class="feat-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="3" y="3" width="12" height="12" rx="2" stroke="var(--amber)" stroke-width="1.5"/><path d="M3 7.5h12M7.5 7.5v7.5" stroke="var(--amber)" stroke-width="1.5"/></svg></div>
+          <div class="fms-title">Export &amp; Reports</div>
+        </div>
+        <p class="fms-desc">Every entry is exportable to Excel or CSV. Daily or weekly summary reports included. A written improvement summary at pilot close — what the data shows, where to focus first.</p>
+      </div>
+    </div>
   </div>
 </section>
 
 <!-- TESTIMONIALS -->
 <section class="testimonials-section">
   <div class="wrap">
-    <div class="s-tag">What shops are saying</div>
     <h2 class="s-h">Real data changes how you manage the floor</h2>
     <p class="s-sub" style="margin-bottom:40px">Early pilot results from small manufacturers in the DFW area.</p>
     <div class="t-grid">
@@ -736,16 +823,78 @@ footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 5
 <!-- WHO -->
 <section class="who-section">
   <div class="wrap">
-    <div class="s-tag">Who this is for</div>
     <h2 class="s-h">Built for small manufacturers moving off paper</h2>
     <p class="s-sub">If your team is still running on clipboards and Excel and you want real data without a platform commitment, this was designed for you.</p>
     <div class="who-grid">
-      <div class="who-card"><div class="who-icon">🏭</div><h3>Job shops &amp; contract manufacturers</h3><p>Multiple products, varying run lengths, operators tracking manually. Need downtime and reject data by job without a full MES.</p></div>
-      <div class="who-card"><div class="who-icon">🔩</div><h3>Small assembly &amp; fabrication plants</h3><p>20–150 employees, one or two lines, no IT department. Want to know what's happening on Line 1 before investing in a platform.</p></div>
-      <div class="who-card"><div class="who-icon">📦</div><h3>Food, packaging &amp; plastics</h3><p>Shift-based production, multiple SKUs, QC at the line. Need reject trends and downtime by reason without a full quality system.</p></div>
-      <div class="who-card"><div class="who-icon">⚙️</div><h3>Shops that tried Excel and hit a wall</h3><p>Built a spreadsheet. Operators hated it. Data was always late. Ready for something purpose-built that doesn't require IT support.</p></div>
-      <div class="who-card"><div class="who-icon">💡</div><h3>Owners who want data before buying software</h3><p>Before spending $50k–$200k on a platform, prove that real data actually changes decisions at your shop with a fixed-price pilot first.</p></div>
-      <div class="who-card"><div class="who-icon">📍</div><h3>DFW area manufacturers</h3><p>On-site setup and operator training included, done in person. DFW metro and up to 75-mile radius. Regional availability on request.</p></div>
+      <div class="who-card">
+        <div class="who-icon">
+          <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" width="36" height="36">
+            <rect x="4" y="18" width="28" height="14" rx="1" stroke="var(--amber)" stroke-width="1.5"/>
+            <rect x="8" y="12" width="8" height="6" rx="1" stroke="var(--amber)" stroke-width="1.5"/>
+            <rect x="20" y="12" width="8" height="6" rx="1" stroke="var(--amber)" stroke-width="1.5"/>
+            <path d="M4 18L18 6L32 18" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <rect x="15" y="24" width="6" height="8" rx="1" stroke="var(--amber)" stroke-width="1.5"/>
+            <path d="M10 22v-1M26 22v-1" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3>Job shops &amp; contract manufacturers</h3>
+        <p>Multiple products, varying run lengths, operators tracking manually. Need downtime and reject data by job without a full MES.</p>
+      </div>
+      <div class="who-card">
+        <div class="who-icon">
+          <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" width="36" height="36">
+            <circle cx="18" cy="18" r="7" stroke="var(--amber)" stroke-width="1.5"/>
+            <circle cx="18" cy="18" r="2.5" stroke="var(--amber)" stroke-width="1.5"/>
+            <path d="M18 4v4M18 28v4M4 18h4M28 18h4M7.5 7.5l2.8 2.8M25.7 25.7l2.8 2.8M7.5 28.5l2.8-2.8M25.7 10.3l2.8-2.8" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3>Small assembly &amp; fabrication plants</h3>
+        <p>20–150 employees, one or two lines, no IT department. Want to know what's happening on Line 1 before investing in a platform.</p>
+      </div>
+      <div class="who-card">
+        <div class="who-icon">
+          <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" width="36" height="36">
+            <path d="M6 10h24v18a2 2 0 01-2 2H8a2 2 0 01-2-2V10z" stroke="var(--amber)" stroke-width="1.5"/>
+            <path d="M4 10h28M12 10V7a2 2 0 012-2h8a2 2 0 012 2v3" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M12 18h12M12 23h8" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3>Food, packaging &amp; plastics</h3>
+        <p>Shift-based production, multiple SKUs, QC at the line. Need reject trends and downtime by reason without a full quality system.</p>
+      </div>
+      <div class="who-card">
+        <div class="who-icon">
+          <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" width="36" height="36">
+            <rect x="4" y="4" width="13" height="13" rx="1.5" stroke="var(--amber)" stroke-width="1.5"/>
+            <rect x="19" y="4" width="13" height="13" rx="1.5" stroke="var(--amber)" stroke-width="1.5"/>
+            <rect x="4" y="19" width="13" height="13" rx="1.5" stroke="var(--amber)" stroke-width="1.5"/>
+            <rect x="19" y="19" width="13" height="13" rx="1.5" stroke="var(--amber)" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <h3>Shops that tried Excel and hit a wall</h3>
+        <p>Built a spreadsheet. Operators hated it. Data was always late. Ready for something purpose-built that doesn't require IT support.</p>
+      </div>
+      <div class="who-card">
+        <div class="who-icon">
+          <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" width="36" height="36">
+            <polyline points="4,28 12,18 18,22 26,10 32,14" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            <circle cx="32" cy="14" r="2.5" stroke="var(--amber)" stroke-width="1.5"/>
+            <path d="M26 8v6h6" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h3>Owners who want data before buying software</h3>
+        <p>Before spending $50k–$200k on a platform, prove that real data actually changes decisions at your shop with a fixed-price pilot first.</p>
+      </div>
+      <div class="who-card">
+        <div class="who-icon">
+          <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" width="36" height="36">
+            <path d="M18 4C13.03 4 9 8.03 9 13c0 6.75 9 19 9 19s9-12.25 9-19c0-4.97-4.03-9-9-9z" stroke="var(--amber)" stroke-width="1.5"/>
+            <circle cx="18" cy="13" r="3.5" stroke="var(--amber)" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <h3>DFW area manufacturers</h3>
+        <p>On-site setup and operator training included, done in person. DFW metro and up to 75-mile radius. Regional availability on request.</p>
+      </div>
     </div>
     <div class="who-note"><strong>Not sure which approach fits your shop?</strong> That's exactly what the 15-minute call is for. Both tablet and sensor-based pilots are available — the right starting point depends on what you're trying to measure and how your operators work.</div>
   </div>
@@ -754,7 +903,6 @@ footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 5
 <!-- TIERS -->
 <section class="tiers-section">
   <div class="wrap">
-    <div class="s-tag">Two approaches</div>
     <h2 class="s-h">Tablet entry or sensor-based — your call</h2>
     <p class="s-sub">Most small shops start with tablets. Some need automatic cycle counts from day one. Both are available as a fixed-price pilot on one process.</p>
     <div class="tiers-grid">
@@ -792,7 +940,6 @@ footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 5
 <!-- HOW IT WORKS -->
 <section class="how-section" id="offer">
   <div class="wrap">
-    <div class="s-tag">Process</div>
     <h2 class="s-h">From call to live dashboard in four steps</h2>
     <p class="s-sub">One process, fixed price, no surprises.</p>
     <div class="steps">
@@ -807,7 +954,6 @@ footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 5
 <!-- OFFER -->
 <section class="offer-section">
   <div class="wrap">
-    <div class="s-tag">Pricing</div>
     <h2 class="s-h">One scope. One price. No surprises.</h2>
     <p class="s-sub">Everything fixed upfront. The optional monthly support is just that — optional.</p>
     <div class="offer-card">
@@ -848,7 +994,6 @@ footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 5
 <!-- FAQ -->
 <section class="faq-section" id="faq">
   <div class="wrap">
-    <div class="s-tag">FAQ</div>
     <h2 class="s-h">Common questions</h2>
     <div class="faq-grid">
       <div class="fq"><h3>Do I need a PLC or existing automation?</h3><p>No. The system uses tablet-based manual entry by operators. No PLC integration, no sensor hardware, no IT project. Works on any machine regardless of age or brand.</p></div>
@@ -864,7 +1009,6 @@ footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 5
 <!-- BOOK -->
 <section class="book-section" id="book">
   <div class="wrap">
-    <div class="s-tag">Get started</div>
     <h2 class="s-h">Is this the right fit for your shop?</h2>
     <p class="s-sub">A 15-minute call is all it takes to find out. No deck, no sales process — just a direct conversation.</p>
     <div style="max-width:760px;margin:0 auto">
@@ -946,12 +1090,41 @@ Cal.ns["shopfloor-fit-call"]("ui", {
 </script>
 
 <script>
+// Feature tabs
 document.querySelectorAll('.feat-tab').forEach(tab => {
   tab.addEventListener('click', () => {
-    document.querySelectorAll('.feat-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.feat-tab').forEach(t => {
+      t.classList.remove('active');
+      t.setAttribute('aria-selected', 'false');
+    });
     document.querySelectorAll('.fp').forEach(p => p.classList.remove('active'));
     tab.classList.add('active');
+    tab.setAttribute('aria-selected', 'true');
     document.getElementById(tab.dataset.panel).classList.add('active');
+  });
+  tab.addEventListener('keydown', e => {
+    const tabs = [...document.querySelectorAll('.feat-tab')];
+    const idx = tabs.indexOf(tab);
+    if (e.key === 'ArrowDown') { e.preventDefault(); tabs[(idx + 1) % tabs.length].focus(); }
+    if (e.key === 'ArrowUp') { e.preventDefault(); tabs[(idx - 1 + tabs.length) % tabs.length].focus(); }
+  });
+});
+
+// Mobile nav
+const hamburger = document.querySelector('.nav-hamburger');
+const drawer = document.getElementById('navDrawer');
+hamburger.addEventListener('click', () => {
+  const open = drawer.classList.toggle('open');
+  hamburger.setAttribute('aria-expanded', String(open));
+  hamburger.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
+  document.body.style.overflow = open ? 'hidden' : '';
+});
+document.querySelectorAll('.nav-drawer-link, .nav-drawer .btn-cta').forEach(link => {
+  link.addEventListener('click', () => {
+    drawer.classList.remove('open');
+    hamburger.setAttribute('aria-expanded', 'false');
+    hamburger.setAttribute('aria-label', 'Open navigation');
+    document.body.style.overflow = '';
   });
 });
 </script>
