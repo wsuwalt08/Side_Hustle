@@ -11,6 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preload" as="video" href="images/robot-hero-compressed.mp4" type="video/mp4">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -635,8 +636,8 @@ nav, section, footer, .proof-strip, .outcome-block {
 
 <!-- HERO -->
 <section class="hero">
-  <video class="hero-video" autoplay muted loop playsinline preload="auto">
-    <source src="images/robot-hero.mp4" type="video/mp4">
+  <video class="hero-video" autoplay muted loop playsinline preload="metadata">
+    <source src="images/robot-hero-compressed.mp4" type="video/mp4">
   </video>
   <div class="hero-overlay"></div>
   <div class="hero-content">
@@ -760,7 +761,7 @@ nav, section, footer, .proof-strip, .outcome-block {
 
 <!-- PROOF STRIP -->
 <div class="proof-strip">
-  <img src="images/shop-team-dashboard.png" alt="Manufacturing team reviewing live production data together on the shop floor" class="proof-strip-img" loading="lazy">
+  <img src="images/shop-team-dashboard.webp" alt="Manufacturing team reviewing live production data together on the shop floor" class="proof-strip-img" loading="lazy">
   <div class="proof-strip-overlay"></div>
   <div class="proof-strip-body">
     <blockquote>The operators actually use it — that's the part I wasn't sure about.</blockquote>
@@ -841,7 +842,7 @@ nav, section, footer, .proof-strip, .outcome-block {
 <div class="outcome-block">
   <div class="outcome-stat">
     <div class="outcome-photo">
-      <img src="images/shop-tablet-oee.png" alt="Plant manager and engineer reviewing live OEE and production data on a tablet at the machine" loading="lazy">
+      <img src="images/shop-tablet-oee.webp" alt="Plant manager and engineer reviewing live OEE and production data on a tablet at the machine" loading="lazy">
     </div>
     <div class="os-num">2.5<span>wks</span></div>
     <div class="os-label">from kickoff call to a live dashboard operators were actually using on the floor</div>
@@ -1095,48 +1096,64 @@ nav, section, footer, .proof-strip, .outcome-block {
     </div>
   </div>
 </footer>
-<!-- Cal.com embed -->
+<!-- Cal.com embed — lazy loaded when booking section enters viewport -->
 <script>
-(function (C, A, L) {
-  let p = function (a, ar) { a.q.push(ar); };
-  let d = C.document;
-  C.Cal = C.Cal || function () {
-    let cal = C.Cal;
-    let ar = arguments;
-    if (!cal.loaded) {
-      cal.ns = {};
-      cal.q = cal.q || [];
-      d.head.appendChild(d.createElement("script")).src = A;
-      cal.loaded = true;
-    }
-    if (ar[0] === L) {
-      const api = function () { p(api, arguments); };
-      const namespace = ar[1];
-      api.q = api.q || [];
-      if (typeof namespace === "string") {
-        cal.ns[namespace] = cal.ns[namespace] || api;
-        p(cal.ns[namespace], ar);
-        p(cal, ["initNamespace", namespace]);
-      } else p(cal, ar);
-      return;
-    }
-    p(cal, ar);
-  };
-})(window, "https://app.cal.com/embed/embed.js", "init");
+(function() {
+  let calLoaded = false;
+  function loadCal() {
+    if (calLoaded) return;
+    calLoaded = true;
+    (function (C, A, L) {
+      let p = function (a, ar) { a.q.push(ar); };
+      let d = C.document;
+      C.Cal = C.Cal || function () {
+        let cal = C.Cal;
+        let ar = arguments;
+        if (!cal.loaded) {
+          cal.ns = {};
+          cal.q = cal.q || [];
+          d.head.appendChild(d.createElement("script")).src = A;
+          cal.loaded = true;
+        }
+        if (ar[0] === L) {
+          const api = function () { p(api, arguments); };
+          const namespace = ar[1];
+          api.q = api.q || [];
+          if (typeof namespace === "string") {
+            cal.ns[namespace] = cal.ns[namespace] || api;
+            p(cal.ns[namespace], ar);
+            p(cal, ["initNamespace", namespace]);
+          } else p(cal, ar);
+          return;
+        }
+        p(cal, ar);
+      };
+    })(window, "https://app.cal.com/embed/embed.js", "init");
 
-Cal("init", "shopfloor-fit-call", { origin: "https://cal.com" });
+    Cal("init", "shopfloor-fit-call", { origin: "https://cal.com" });
+    Cal.ns["shopfloor-fit-call"]("inline", {
+      elementOrSelector: "#my-cal-inline",
+      config: { layout: "month_view" },
+      calLink: "walter-robison-npehq8/shopfloor-fit-call",
+    });
+    Cal.ns["shopfloor-fit-call"]("ui", {
+      styles: { branding: { brandColor: "#22D3EE" } },
+      hideEventTypeDetails: false,
+      layout: "month_view",
+    });
+  }
 
-Cal.ns["shopfloor-fit-call"]("inline", {
-  elementOrSelector: "#my-cal-inline",
-  config: { layout: "month_view" },
-  calLink: "walter-robison-npehq8/shopfloor-fit-call",
-});
-
-Cal.ns["shopfloor-fit-call"]("ui", {
-  styles: { branding: { brandColor: "#F59E0B" } },
-  hideEventTypeDetails: false,
-  layout: "month_view",
-});
+  // Load only when the booking section is near the viewport
+  const bookSection = document.getElementById('book');
+  if (bookSection && 'IntersectionObserver' in window) {
+    new IntersectionObserver((entries, obs) => {
+      if (entries[0].isIntersecting) { loadCal(); obs.disconnect(); }
+    }, { rootMargin: '400px' }).observe(bookSection);
+  } else {
+    // Fallback: load after 4s if IntersectionObserver not supported
+    setTimeout(loadCal, 4000);
+  }
+})();
 </script>
 
 <script>
