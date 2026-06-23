@@ -444,7 +444,43 @@ footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 5
 .footer-bottom { border-top: 1px solid var(--border); padding-top: 24px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
 .footer-bottom p { font-size: 13px; color: var(--t3); }
 
-/* ── PROOF STRIP ── */
+/* ── BEFORE/AFTER VIDEO BRIDGE ── */
+.bridge-section {
+  position: relative; height: 420px; overflow: hidden;
+  border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+}
+.bridge-video {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%; object-fit: cover; object-position: center 30%;
+  z-index: 0;
+}
+.bridge-overlay {
+  position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(100deg, rgba(6,13,26,.90) 0%, rgba(6,13,26,.70) 55%, rgba(6,13,26,.30) 100%);
+}
+.bridge-body {
+  position: absolute; inset: 0; z-index: 2;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 0 10%;
+}
+.bridge-label {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--red); margin-bottom: 14px;
+}
+.bridge-body h2 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(24px,3vw,40px); font-weight: 700;
+  color: var(--white); line-height: 1.2; letter-spacing: -0.025em;
+  max-width: 520px; margin-bottom: 14px; text-wrap: balance;
+}
+.bridge-body p {
+  font-size: 16px; color: var(--t2); max-width: 420px; line-height: 1.65;
+}
+@media (max-width: 600px) {
+  .bridge-section { height: 340px; }
+  .bridge-body { padding: 0 22px; }
+}
 .proof-strip {
   position: relative; height: 440px; overflow: hidden;
   border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
@@ -719,6 +755,19 @@ nav, section, footer, .proof-strip, .outcome-block {
   <div class="proof-strip-body">
     <blockquote>The operators actually use it — that's the part I wasn't sure about.</blockquote>
     <cite>R. Kowalski · Operations Director · Plastics · Fort Worth, TX</cite>
+  </div>
+</div>
+
+<!-- 4b: BEFORE/AFTER — show the current reality before presenting the solution -->
+<div class="bridge-section">
+  <video class="bridge-video" autoplay muted loop playsinline preload="none">
+    <source src="images/oldnew-process-compressed.mp4" type="video/mp4">
+  </video>
+  <div class="bridge-overlay"></div>
+  <div class="bridge-body">
+    <div class="bridge-label">The old way</div>
+    <h2>Paper logs. End-of-shift spreadsheets. No idea what's happening in real time.</h2>
+    <p>Most small shops run this way. The data arrives hours late, reasons get guessed, and the same problems repeat undetected.</p>
   </div>
 </div>
 
