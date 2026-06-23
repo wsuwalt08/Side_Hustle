@@ -190,6 +190,12 @@
     fade var(--fade-dur, 5s) ease-in-out forwards;
 }
 
+/* ── Typewriter accent ── */
+.typewriter-accent {
+  color: var(--light-color);
+  text-shadow: 0 0 20px var(--glow-color-1);
+}
+
 /* ── Demo layout classes ── */
 .content-wrapper {
   position: relative;

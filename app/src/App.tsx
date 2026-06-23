@@ -1,5 +1,6 @@
 import React from 'react'
 import BackgroundScene from '@/components/ui/aurora-section-hero'
+import { Typewriter } from '@/components/ui/typewriter'
 import './index.css'
 
 const App: React.FC = () => {
@@ -19,7 +20,17 @@ const App: React.FC = () => {
         </header>
 
         <main className="hero-section">
-          <h1>The Future of Data</h1>
+          <h1>
+            The Future of{' '}
+            <Typewriter
+              text={['Data', 'Manufacturing', 'Insight', 'Your Floor']}
+              speed={70}
+              deleteSpeed={40}
+              waitTime={1800}
+              cursorChar="_"
+              className="typewriter-accent"
+            />
+          </h1>
           <p>
             Unlock unparalleled insights and drive innovation with our next-generation
             data intelligence platform.
