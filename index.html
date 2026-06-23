@@ -116,7 +116,22 @@ nav {
   background: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(245,158,11,0.10) 0%, transparent 70%);
   overflow: hidden;
 }
-.hero-inner { text-align: center; max-width: 800px; margin: 0 auto; padding-bottom: 60px; }
+.hero-inner { text-align: left; max-width: none; margin: 0; padding-bottom: 0; }
+.hero-split {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 52px;
+  align-items: center; padding-bottom: 60px;
+}
+.hero-photo {
+  position: relative; border-radius: 14px; overflow: hidden;
+  box-shadow: 0 24px 80px rgba(0,0,0,.65), 0 0 0 1px rgba(255,255,255,.06);
+  aspect-ratio: 4/3;
+}
+.hero-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 30%; display: block; }
+.hero-photo::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(210deg, rgba(14,17,23,0) 40%, rgba(14,17,23,.45) 100%);
+  pointer-events: none;
+}
 
 .hero-tag {
   display: inline-flex; align-items: center; gap: 8px;
@@ -139,10 +154,10 @@ h1 em { font-style: normal; color: var(--amber); }
   font-size: 19px; color: var(--t2); line-height: 1.7;
   max-width: 600px; margin: 0 auto 40px; text-wrap: pretty;
 }
-.check-row { display: flex; justify-content: center; gap: 28px; flex-wrap: wrap; margin-bottom: 40px; }
+.check-row { display: flex; justify-content: flex-start; gap: 28px; flex-wrap: wrap; margin-bottom: 40px; }
 .check { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; color: var(--t1); }
 .check svg { color: var(--green); }
-.hero-btns { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+.hero-btns { display: flex; justify-content: flex-start; gap: 12px; flex-wrap: wrap; }
 .btn-primary {
   background: var(--amber); color: #0E1117;
   font-family: 'Space Grotesk', sans-serif;
@@ -442,8 +457,55 @@ footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 5
 .footer-bottom { border-top: 1px solid var(--border); padding-top: 24px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
 .footer-bottom p { font-size: 13px; color: var(--t3); }
 
+/* ── PROOF STRIP ── */
+.proof-strip {
+  position: relative; height: 440px; overflow: hidden;
+  border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+}
+.proof-strip-img {
+  width: 100%; height: 100%; object-fit: cover; object-position: center 25%;
+  display: block;
+}
+.proof-strip-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(100deg, rgba(14,17,23,.88) 0%, rgba(14,17,23,.6) 55%, rgba(14,17,23,.15) 100%);
+}
+.proof-strip-body {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 0 10%;
+}
+.proof-strip-body blockquote {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(22px,2.8vw,36px); font-weight: 600;
+  color: var(--white); line-height: 1.35; letter-spacing: -0.025em;
+  max-width: 580px; margin-bottom: 20px; text-wrap: balance;
+}
+.proof-strip-body blockquote::before { content: '\201C'; color: var(--amber); }
+.proof-strip-body blockquote::after  { content: '\201D'; color: var(--amber); }
+.proof-strip-body cite { font-size: 14px; color: var(--t2); font-style: normal; }
+
+/* ── OUTCOME PHOTO ── */
+.outcome-photo {
+  position: relative; border-radius: 10px; overflow: hidden;
+  box-shadow: 0 12px 48px rgba(0,0,0,.5);
+  aspect-ratio: 4/3; margin-bottom: 28px;
+}
+.outcome-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
+.outcome-photo::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(14,17,23,.4) 0%, transparent 60%);
+}
+
 /* ── RESPONSIVE ── */
 @media (max-width: 960px) {
+  .hero-split { grid-template-columns: 1fr; gap: 32px; }
+  .hero-inner { text-align: center; }
+  .check-row { justify-content: center; }
+  .hero-btns { justify-content: center; }
+  .hero-photo { aspect-ratio: 16/9; order: -1; }
+  .proof-strip { height: 320px; }
+  .proof-strip-body { padding: 0 28px; }
   .kpi-row { grid-template-columns: repeat(2,1fr); }
   .chart-row { grid-template-columns: 1fr; }
   .stats-grid { grid-template-columns: repeat(2,1fr); }
@@ -512,21 +574,26 @@ footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 5
 <!-- HERO -->
 <section class="hero">
   <div class="wrap">
-    <div class="hero-inner">
-      <div class="hero-tag"><span class="dot"></span>Fixed-price pilot · DFW area · No sensors required</div>
-      <h1>Find hidden losses on your shop floor — <em>fast.</em></h1>
-      <p class="hero-sub">Tablet-based production tracking and a live dashboard for one machine, line, or process. No MES. No sensors. No IT project. Fixed price.</p>
-      <div class="check-row">
-        <div class="check"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Live in 2–3 weeks</div>
-        <div class="check"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>No sensors or IT work</div>
-        <div class="check"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>One process to start</div>
-        <div class="check"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Fixed price, no surprises</div>
+    <div class="hero-split">
+      <div class="hero-inner">
+        <div class="hero-tag"><span class="dot"></span>Fixed-price pilot · DFW area · No sensors required</div>
+        <h1>Find hidden losses on your shop floor — <em>fast.</em></h1>
+        <p class="hero-sub">Tablet-based production tracking and a live dashboard for one machine, line, or process. No MES. No sensors. No IT project. Fixed price.</p>
+        <div class="check-row">
+          <div class="check"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Live in 2–3 weeks</div>
+          <div class="check"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>No sensors or IT work</div>
+          <div class="check"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>One process to start</div>
+          <div class="check"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Fixed price, no surprises</div>
+        </div>
+        <div class="hero-btns">
+          <a href="#book" class="btn-primary">Book a 15-Minute Fit Call →</a>
+          <a href="#features" class="btn-outline">▶ See how it works</a>
+        </div>
       </div>
-      <div class="hero-btns">
-        <a href="#book" class="btn-primary">Book a 15-Minute Fit Call →</a>
-        <a href="#features" class="btn-outline">▶ See how it works</a>
+      <div class="hero-photo">
+        <img src="images/shop-downtime-alert.jpg" alt="Operator on the shop floor checking a live downtime alert on a tablet while the line stops" loading="eager">
       </div>
-    </div>
+    </div><!-- /hero-split -->
 
     <div class="dash-wrap">
       <div class="dash-chrome">
@@ -627,6 +694,16 @@ footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 5
     </div>
   </div>
 </section>
+
+<!-- PROOF STRIP -->
+<div class="proof-strip">
+  <img src="images/shop-team-dashboard.jpg" alt="Manufacturing team reviewing live production data together on the shop floor" class="proof-strip-img" loading="lazy">
+  <div class="proof-strip-overlay"></div>
+  <div class="proof-strip-body">
+    <blockquote>The operators actually use it — that's the part I wasn't sure about.</blockquote>
+    <cite>R. Kowalski · Operations Director · Plastics · Fort Worth, TX</cite>
+  </div>
+</div>
 
 <!-- FEATURES -->
 <section class="features-section" id="features">
@@ -808,6 +885,9 @@ footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 5
 </div>
 <div class="outcome-block">
   <div class="outcome-stat">
+    <div class="outcome-photo">
+      <img src="images/shop-tablet-oee.jpg" alt="Plant manager and engineer reviewing live OEE and production data on a tablet at the machine" loading="lazy">
+    </div>
     <div class="os-num">2.5<span>wks</span></div>
     <div class="os-label">from kickoff call to a live dashboard operators were actually using on the floor</div>
     <div class="os-quote">"The fixed price mattered — I'd looked at Amper and the quotes weren't in the same universe."</div>
