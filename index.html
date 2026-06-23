@@ -745,16 +745,7 @@ nav, section, footer, .proof-strip, .outcome-block {
       <div class="stat"><div class="stat-v">0</div><div class="stat-l">Sensors or integrations required</div></div>
       <div class="stat"><div class="stat-v">1</div><div class="stat-l">Process to prove value first</div></div>
     </div>
-  </div>
-</div>
-
-<!-- 3: PROOF STRIP — social proof early, before any selling -->
-<div class="proof-strip">
-  <img src="images/shop-team-dashboard.webp" alt="Manufacturing team reviewing live production data together on the shop floor" class="proof-strip-img" loading="lazy">
-  <div class="proof-strip-overlay"></div>
-  <div class="proof-strip-body">
-    <blockquote>The operators actually use it — that's the part I wasn't sure about.</blockquote>
-    <cite>R. Kowalski · Operations Director · Plastics · Fort Worth, TX</cite>
+    <p style="text-align:center;margin-top:28px;font-size:14px;color:var(--t3);font-style:italic">"The operators actually use it — that's the part I wasn't sure about." — R. Kowalski, Operations Director · Fort Worth, TX</p>
   </div>
 </div>
 
@@ -897,7 +888,7 @@ nav, section, footer, .proof-strip, .outcome-block {
       <h2 class="footer-cta-h">Ready to stop guessing<br>what's slowing your floor down?</h2>
       <p class="footer-cta-sub">Book a 15-minute call. We'll talk about what you track today, what you're missing, and whether a one-line pilot makes sense. No pitch, no deck.</p>
       <div class="footer-cta-btns">
-        <a href="#book" class="btn-primary">Book a Fit Call ↗</a>
+        <a href="https://cal.com/walter-robison-npehq8/shopfloor-fit-call" target="_blank" rel="noopener" class="btn-primary">Book a Fit Call ↗</a>
         <a href="calculator.html" class="btn-outline">Run the Downtime Calculator ↗</a>
       </div>
       <p class="footer-cta-note">Fixed price · DFW area · Live in 2–3 weeks</p>
@@ -906,11 +897,14 @@ nav, section, footer, .proof-strip, .outcome-block {
 </section>
 
 <!-- 13: BOOK — the ask -->
-<section class="book-section" id="book" style="padding:60px 0 80px">
+<section class="book-section" id="book" style="padding:72px 0 88px;text-align:center">
   <div class="wrap">
-    <h2 class="s-h" style="text-align:center;margin:0 auto 10px">Book a 15-minute fit call</h2>
-    <p class="s-sub" style="text-align:center;margin:0 auto 36px">No deck, no sales process — just a direct conversation about your shop.</p>
-    <div id="my-cal-inline" style="max-width:900px;margin:0 auto;min-height:580px;border-radius:12px;overflow:hidden"></div>
+    <h2 class="s-h" style="text-align:center;margin:0 auto 12px">Book a 15-minute fit call</h2>
+    <p class="s-sub" style="text-align:center;margin:0 auto 36px">No deck, no sales process — just a direct conversation about whether a one-line pilot makes sense for your shop.</p>
+    <a href="https://cal.com/walter-robison-npehq8/shopfloor-fit-call" target="_blank" rel="noopener" class="btn-primary" style="font-size:17px;padding:18px 40px;margin-bottom:16px;display:inline-flex">
+      Open Booking Calendar ↗
+    </a>
+    <p style="font-size:13px;color:var(--t3);margin-top:14px">Opens in a new tab · 15 minutes · DFW area</p>
   </div>
 </section>
 
@@ -933,7 +927,7 @@ nav, section, footer, .proof-strip, .outcome-block {
       <div class="f-col">
         <h4>Contact</h4>
         <a href="mailto:robisonw08@gmail.com">Contact Us</a>
-        <a href="#book">Book a call</a>
+        <a href="https://cal.com/walter-robison-npehq8/shopfloor-fit-call" target="_blank" rel="noopener">Book a call</a>
       </div>
     </div>
     <div class="footer-bottom">
@@ -942,65 +936,6 @@ nav, section, footer, .proof-strip, .outcome-block {
     </div>
   </div>
 </footer>
-<!-- Cal.com embed — lazy loaded when booking section enters viewport -->
-<script>
-(function() {
-  let calLoaded = false;
-  function loadCal() {
-    if (calLoaded) return;
-    calLoaded = true;
-    (function (C, A, L) {
-      let p = function (a, ar) { a.q.push(ar); };
-      let d = C.document;
-      C.Cal = C.Cal || function () {
-        let cal = C.Cal;
-        let ar = arguments;
-        if (!cal.loaded) {
-          cal.ns = {};
-          cal.q = cal.q || [];
-          d.head.appendChild(d.createElement("script")).src = A;
-          cal.loaded = true;
-        }
-        if (ar[0] === L) {
-          const api = function () { p(api, arguments); };
-          const namespace = ar[1];
-          api.q = api.q || [];
-          if (typeof namespace === "string") {
-            cal.ns[namespace] = cal.ns[namespace] || api;
-            p(cal.ns[namespace], ar);
-            p(cal, ["initNamespace", namespace]);
-          } else p(cal, ar);
-          return;
-        }
-        p(cal, ar);
-      };
-    })(window, "https://app.cal.com/embed/embed.js", "init");
-
-    Cal("init", "tracemfg-fit-call", { origin: "https://cal.com" });
-    Cal.ns["tracemfg-fit-call"]("inline", {
-      elementOrSelector: "#my-cal-inline",
-      config: { layout: "month_view" },
-      calLink: "walter-robison-npehq8/tracemfg-fit-call",
-    });
-    Cal.ns["tracemfg-fit-call"]("ui", {
-      styles: { branding: { brandColor: "#22D3EE" } },
-      hideEventTypeDetails: false,
-      layout: "month_view",
-    });
-  }
-
-  // Load only when the booking section is near the viewport
-  const bookSection = document.getElementById('book');
-  if (bookSection && 'IntersectionObserver' in window) {
-    new IntersectionObserver((entries, obs) => {
-      if (entries[0].isIntersecting) { loadCal(); obs.disconnect(); }
-    }, { rootMargin: '400px' }).observe(bookSection);
-  } else {
-    // Fallback: load after 4s if IntersectionObserver not supported
-    setTimeout(loadCal, 4000);
-  }
-})();
-</script>
 
 <script>
 // Mobile nav
