@@ -112,67 +112,57 @@ nav {
 
 /* ── HERO ── */
 .hero {
-  padding: 88px 0 0;
+  padding: 120px 0 0;
   background: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(245,158,11,0.10) 0%, transparent 70%);
   overflow: hidden;
 }
-.hero-inner { text-align: left; max-width: none; margin: 0; padding-bottom: 0; }
-.hero-split {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 52px;
-  align-items: center; padding-bottom: 60px;
-}
-.hero-photo {
-  position: relative; border-radius: 14px; overflow: hidden;
-  box-shadow: 0 24px 80px rgba(0,0,0,.65), 0 0 0 1px rgba(255,255,255,.06);
-  aspect-ratio: 4/3;
-}
-.hero-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 30%; display: block; }
-.hero-photo::after {
-  content: ''; position: absolute; inset: 0;
-  background: linear-gradient(210deg, rgba(14,17,23,0) 40%, rgba(14,17,23,.45) 100%);
-  pointer-events: none;
-}
+.hero-center { text-align: center; max-width: 820px; margin: 0 auto; padding-bottom: 72px; }
 
 .hero-tag {
   display: inline-flex; align-items: center; gap: 8px;
   background: var(--green-bg); color: var(--green);
-  border: 1px solid var(--green-br); border-radius: 20px;
-  font-size: 13px; font-weight: 500; padding: 5px 14px; margin-bottom: 32px;
+  border: 1px solid var(--green-br); border-radius: 100px;
+  font-size: 13px; font-weight: 500; padding: 5px 16px; margin-bottom: 36px;
 }
 .hero-tag .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); animation: pulse 2s ease-in-out infinite; }
 @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.25} }
 
 h1 {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: clamp(36px,5.8vw,62px); font-weight: 700;
-  line-height: 1.05; letter-spacing: -0.03em; color: var(--white); margin-bottom: 22px;
+  font-size: clamp(42px,6.5vw,76px); font-weight: 700;
+  line-height: 1.02; letter-spacing: -0.035em; color: var(--white); margin-bottom: 24px;
   text-wrap: balance;
 }
 h1 em { font-style: normal; color: var(--amber); }
 
 .hero-sub {
-  font-size: 19px; color: var(--t2); line-height: 1.7;
-  max-width: 600px; margin: 0 auto 40px; text-wrap: pretty;
+  font-size: 20px; color: var(--t2); line-height: 1.7;
+  max-width: 580px; margin: 0 auto 44px; text-wrap: pretty;
 }
-.check-row { display: flex; justify-content: flex-start; gap: 28px; flex-wrap: wrap; margin-bottom: 40px; }
-.check { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; color: var(--t1); }
-.check svg { color: var(--green); }
-.hero-btns { display: flex; justify-content: flex-start; gap: 12px; flex-wrap: wrap; }
+.check-row { display: flex; justify-content: center; gap: 28px; flex-wrap: wrap; margin-bottom: 44px; }
+.check { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; color: var(--t2); }
+.check svg { color: var(--green); flex-shrink: 0; }
+.hero-btns { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
+
+/* Pill buttons (Vexel-style) */
 .btn-primary {
   background: var(--amber); color: #0E1117;
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 16px; font-weight: 700;
-  padding: 14px 30px; border-radius: 8px; text-decoration: none;
+  font-size: 15px; font-weight: 700;
+  padding: 14px 28px; border-radius: 100px; text-decoration: none;
+  display: inline-flex; align-items: center; gap: 8px;
   box-shadow: 0 4px 24px rgba(245,158,11,.35); transition: opacity .15s;
 }
 .btn-primary:hover { opacity: .88; }
 .btn-outline {
-  background: rgba(255,255,255,.05); color: var(--t1);
-  font-size: 16px; font-weight: 500;
-  padding: 14px 30px; border-radius: 8px; border: 1px solid var(--border2);
-  text-decoration: none; transition: background .15s;
+  background: transparent; color: var(--t1);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 15px; font-weight: 600;
+  padding: 14px 28px; border-radius: 100px; border: 1px solid var(--border2);
+  text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+  transition: background .15s, border-color .15s;
 }
-.btn-outline:hover { background: rgba(255,255,255,.09); }
+.btn-outline:hover { background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.2); }
 
 /* ── DASHBOARD MOCKUP ── */
 .dash-wrap {
@@ -273,70 +263,21 @@ section { padding: 80px 0; }
 
 /* ── FEATURES ── */
 .features-section { border-top: 1px solid var(--border); }
-.feat-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: start; }
-.feat-tabs { display: flex; flex-direction: column; gap: 4px; }
-.feat-tab {
-  padding: 18px 20px; border-radius: 8px; border: 1px solid transparent;
-  cursor: pointer; transition: all .2s;
-  background: none; text-align: left; width: 100%; font-family: inherit;
+.feat-cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+.feat-card {
+  background: var(--card); border: 1px solid var(--border2);
+  border-radius: 12px; padding: 30px 28px;
+  transition: border-color .2s, box-shadow .2s;
 }
-.feat-tab:hover { background: var(--card); }
-.feat-tab.active { background: var(--card2); border-color: var(--border2); }
-.feat-tab:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
-.feat-tab-head { display: flex; align-items: center; gap: 12px; }
-.feat-tab.active .feat-tab-head { margin-bottom: 10px; }
+.feat-card:hover { border-color: var(--amber-br); box-shadow: 0 8px 32px rgba(245,158,11,.06); }
 .feat-icon {
-  width: 34px; height: 34px; border-radius: 8px; background: var(--amber-bg);
+  width: 40px; height: 40px; border-radius: 10px; background: var(--amber-bg);
   display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  margin-bottom: 18px;
 }
-.feat-tab.active .feat-icon { background: rgba(245,158,11,.2); }
-.feat-title { font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 600; color: var(--t1); }
-.feat-desc { font-size: 14px; color: var(--t2); line-height: 1.6; display: none; text-wrap: pretty; }
-.feat-tab.active .feat-desc { display: block; }
-.feat-preview { position: sticky; top: 80px; background: var(--card); border: 1px solid var(--border2); border-radius: 12px; overflow: hidden; box-shadow: 0 8px 48px rgba(0,0,0,.5); }
-.fp-chrome { background: var(--card2); padding: 10px 14px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 6px; }
-.fp-dot { width: 9px; height: 9px; border-radius: 50%; }
-.fp-body { padding: 20px; min-height: 340px; }
-.fp { display: none; }
-.fp.active { display: block; }
-
-/* tablet preview */
-.tablet-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.t-field { background: var(--bg2); border: 1px solid var(--border); border-radius: 6px; padding: 12px 14px; }
-.t-fl { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .07em; color: var(--t3); margin-bottom: 6px; }
-.t-val { font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 600; color: var(--t1); }
-.reason-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
-.rb { padding: 10px; border-radius: 6px; text-align: center; font-size: 13px; font-weight: 600; border: 1px solid var(--border); }
-.rb.sel { background: var(--amber); color: #0E1117; border-color: var(--amber); }
-.rb.unsel { background: var(--bg2); color: var(--t2); }
-
-/* dashboard mini */
-.mini-kpis { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 12px; }
-.mk { background: var(--bg2); border: 1px solid var(--border); border-radius: 6px; padding: 10px 12px; }
-.mk-l { font-size: 9px; text-transform: uppercase; letter-spacing: .06em; color: var(--t3); margin-bottom: 5px; }
-.mk-v { font-family: 'Space Grotesk', sans-serif; font-size: 20px; font-weight: 700; }
-.mini-bars { display: flex; align-items: flex-end; gap: 4px; height: 60px; }
-.mb { flex: 1; border-radius: 2px 2px 0 0; background: var(--amber); opacity: .7; }
-
-/* pareto mini */
-.pareto-mini { display: flex; flex-direction: column; gap: 10px; }
-.pm-hd { display: flex; justify-content: space-between; font-size: 12px; color: var(--t2); margin-bottom: 5px; }
-.pm-tr { height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
-.pm-fl { height: 100%; border-radius: 4px; }
-.pm-note { margin-top: 16px; background: var(--amber-bg); border: 1px solid var(--amber-br); border-radius: 6px; padding: 10px 12px; font-size: 12px; color: var(--amber); }
-
-/* export preview */
-.exp-hd { display: grid; grid-template-columns: repeat(5,1fr); gap: 4px; margin-bottom: 6px; }
-.exp-hd span { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--t3); }
-.exp-row { display: grid; grid-template-columns: repeat(5,1fr); gap: 4px; background: var(--bg2); border-radius: 4px; padding: 6px 8px; margin-bottom: 3px; }
-.exp-row span { font-size: 11px; color: var(--t2); font-variant-numeric: tabular-nums; }
-
-/* mobile feature stack */
-.feat-mobile-stack { display: none; flex-direction: column; gap: 16px; }
-.fms-item { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 20px; }
-.fms-head { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
-.fms-title { font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 600; color: var(--t1); }
-.fms-desc { font-size: 14px; color: var(--t2); line-height: 1.6; }
+.feat-card h3 { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 700; color: var(--white); margin-bottom: 10px; }
+.feat-card p { font-size: 14px; color: var(--t2); line-height: 1.65; text-wrap: pretty; }
+.feat-card p em { font-style: normal; color: var(--amber); font-weight: 600; }
 
 /* ── TESTIMONIALS ── */
 .testimonials-section { border-top: 1px solid var(--border); }
@@ -435,6 +376,27 @@ section { padding: 80px 0; }
 .fq h3 { font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 700; color: var(--white); margin-bottom: 10px; }
 .fq p { font-size: 14px; color: var(--t2); line-height: 1.65; text-wrap: pretty; }
 
+/* ── FOOTER CTA ── */
+.footer-cta-section {
+  border-top: 1px solid var(--border);
+  background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(245,158,11,.07) 0%, transparent 70%);
+  text-align: center;
+  padding: 100px 0;
+}
+.footer-cta-inner { max-width: 680px; margin: 0 auto; }
+.footer-cta-h {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(32px,4.5vw,56px); font-weight: 700;
+  line-height: 1.08; letter-spacing: -0.035em;
+  color: var(--white); margin-bottom: 20px; text-wrap: balance;
+}
+.footer-cta-sub {
+  font-size: 17px; color: var(--t2); line-height: 1.65;
+  max-width: 520px; margin: 0 auto 40px; text-wrap: pretty;
+}
+.footer-cta-btns { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; margin-bottom: 20px; }
+.footer-cta-note { font-size: 13px; color: var(--t3); }
+
 /* ── BOOK ── */
 .book-section {
   border-top: 1px solid var(--border); text-align: center;
@@ -499,11 +461,6 @@ footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 5
 
 /* ── RESPONSIVE ── */
 @media (max-width: 960px) {
-  .hero-split { grid-template-columns: 1fr; gap: 32px; }
-  .hero-inner { text-align: center; }
-  .check-row { justify-content: center; }
-  .hero-btns { justify-content: center; }
-  .hero-photo { aspect-ratio: 16/9; order: -1; }
   .proof-strip { height: 320px; }
   .proof-strip-body { padding: 0 28px; }
   .kpi-row { grid-template-columns: repeat(2,1fr); }
@@ -513,10 +470,7 @@ footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 5
   .stat:nth-child(odd) { border-right: 1px solid var(--border); }
   .stats-inner { flex-direction: column; }
   .vs-grid { grid-template-columns: 1fr; }
-  .feat-layout { grid-template-columns: 1fr; }
-  .feat-tabs { display: none; }
-  .feat-preview { display: none; }
-  .feat-mobile-stack { display: flex; }
+  .feat-cards { grid-template-columns: repeat(2,1fr); }
   .t-grid { grid-template-columns: 1fr; }
   .outcome-block { grid-template-columns: 1fr; }
   .outcome-block:nth-child(even) .outcome-text { order: 1; padding: 48px 0; }
@@ -540,6 +494,7 @@ footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 5
   .who-grid { grid-template-columns: 1fr; }
   .steps { grid-template-columns: 1fr; }
   .check-row { flex-direction: column; align-items: center; gap: 14px; }
+  .feat-cards { grid-template-columns: 1fr; }
   .footer-grid { grid-template-columns: 1fr; }
   .offer-card { padding: 28px 20px; }
   .book-card { padding: 32px 20px; }
@@ -657,26 +612,21 @@ nav, section, footer, .proof-strip, .outcome-block {
 <!-- HERO -->
 <section class="hero">
   <div class="wrap">
-    <div class="hero-split">
-      <div class="hero-inner">
-        <div class="hero-tag"><span class="dot"></span>Fixed-price pilot · DFW area · No sensors required</div>
-        <h1>Find hidden losses on your shop floor — <em>fast.</em></h1>
-        <p class="hero-sub">Tablet-based production tracking and a live dashboard for one machine, line, or process. No MES. No sensors. No IT project. Fixed price.</p>
-        <div class="check-row">
-          <div class="check"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Live in 2–3 weeks</div>
-          <div class="check"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>No sensors or IT work</div>
-          <div class="check"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>One process to start</div>
-          <div class="check"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Fixed price, no surprises</div>
-        </div>
-        <div class="hero-btns">
-          <a href="#book" class="btn-primary">Book a 15-Minute Fit Call →</a>
-          <a href="#features" class="btn-outline">▶ See how it works</a>
-        </div>
+    <div class="hero-center">
+      <div class="hero-tag"><span class="dot"></span>Fixed-price pilot · DFW area · No sensors required</div>
+      <h1>Find hidden losses on your shop floor — <em>fast.</em></h1>
+      <p class="hero-sub">Tablet-based production tracking and a live dashboard for one machine, line, or process. No MES. No sensors. No IT project. Fixed price.</p>
+      <div class="check-row">
+        <div class="check"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Live in 2–3 weeks</div>
+        <div class="check"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>No sensors or IT work</div>
+        <div class="check"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>One process to start</div>
+        <div class="check"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Fixed price, no surprises</div>
       </div>
-      <div class="hero-photo">
-        <img src="images/shop-downtime-alert.png" alt="Operator on the shop floor checking a live downtime alert on a tablet while the line stops" loading="eager">
+      <div class="hero-btns">
+        <a href="#book" class="btn-primary">Book a 15-Min Fit Call ↗</a>
+        <a href="#features" class="btn-outline">See how it works ↗</a>
       </div>
-    </div><!-- /hero-split -->
+    </div><!-- /hero-center -->
 
     <div class="dash-wrap">
       <div class="dash-chrome">
@@ -793,129 +743,21 @@ nav, section, footer, .proof-strip, .outcome-block {
   <div class="wrap">
     <h2 class="s-h">Everything you need to see what's happening</h2>
     <p class="s-sub">Built around the four things that matter: what ran, what stopped, what failed, and why.</p>
-    <!-- desktop: tabs + preview panel -->
-    <div class="feat-layout">
-      <div class="feat-tabs" id="featTabs" role="tablist">
-        <button class="feat-tab active" data-panel="p1" role="tab" aria-selected="true" aria-controls="p1">
-          <div class="feat-tab-head">
-            <div class="feat-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="3" y="9" width="3" height="6" fill="var(--amber)" rx="1"/><rect x="7.5" y="6" width="3" height="9" fill="var(--amber)" rx="1"/><rect x="12" y="3" width="3" height="12" fill="var(--amber)" rx="1"/></svg></div>
-            <div class="feat-title">Tablet Production Entry</div>
-          </div>
-          <div class="feat-desc">Operators log good parts, reject parts, shift, product, and operator on a tablet during the shift — not from memory afterward. Fast buttons, simple layout, no training friction.</div>
-        </button>
-        <button class="feat-tab" data-panel="p2" role="tab" aria-selected="false" aria-controls="p2">
-          <div class="feat-tab-head">
-            <div class="feat-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="6" stroke="var(--amber)" stroke-width="1.5"/><path d="M9 5.5V9.5l2.5 2.5" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round"/></svg></div>
-            <div class="feat-title">Downtime Reason Buttons</div>
-          </div>
-          <div class="feat-desc">When the line stops, operators tap the reason in real time — not recalled at shift end. See a Pareto of top stop causes by shift, operator, and machine automatically.</div>
-        </button>
-        <button class="feat-tab" data-panel="p3" role="tab" aria-selected="false" aria-controls="p3">
-          <div class="feat-tab-head">
-            <div class="feat-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 9h12M9 3v12" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round"/><circle cx="9" cy="9" r="6" stroke="var(--amber)" stroke-width="1.5"/></svg></div>
-            <div class="feat-title">Live Dashboard</div>
-          </div>
-          <div class="feat-desc">A real-time shift dashboard on any screen — tablet, laptop, or wall TV. Production vs. target, top downtime reasons, reject rate, and efficiency by shift.</div>
-        </button>
-        <button class="feat-tab" data-panel="p4" role="tab" aria-selected="false" aria-controls="p4">
-          <div class="feat-tab-head">
-            <div class="feat-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="3" y="3" width="12" height="12" rx="2" stroke="var(--amber)" stroke-width="1.5"/><path d="M3 7.5h12M7.5 7.5v7.5" stroke="var(--amber)" stroke-width="1.5"/></svg></div>
-            <div class="feat-title">Export &amp; Reports</div>
-          </div>
-          <div class="feat-desc">Every entry is exportable to Excel or CSV. Daily or weekly summary reports included. A written improvement summary at pilot close — what the data shows, where to focus first.</div>
-        </button>
+    <div class="feat-cards">
+      <div class="feat-card">
+        <div class="feat-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="10" width="3" height="7" fill="var(--amber)" rx="1"/><rect x="8.5" y="6.5" width="3" height="10.5" fill="var(--amber)" rx="1"/><rect x="14" y="3" width="3" height="14" fill="var(--amber)" rx="1"/></svg></div>
+        <h3>Tablet Production Entry</h3>
+        <p>Operators log good parts, rejects, downtime reasons, shift, and product on a tablet <em>during</em> the shift — not from memory afterward. Fast buttons, zero training friction.</p>
       </div>
-      <div class="feat-preview" role="tabpanel">
-        <div class="fp-chrome">
-          <div class="fp-dot" style="background:#f87171"></div>
-          <div class="fp-dot" style="background:#fbbf24"></div>
-          <div class="fp-dot" style="background:#34d399"></div>
-        </div>
-        <div class="fp-body">
-          <div class="fp active" id="p1">
-            <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--t3);margin-bottom:12px">Tablet Entry · Line 1</div>
-            <div class="tablet-wrap">
-              <div class="t-field"><div class="t-fl">Shift</div><div class="t-val">Day</div></div>
-              <div class="t-field"><div class="t-fl">Operator</div><div class="t-val">J. Morales</div></div>
-              <div class="t-field"><div class="t-fl">Product</div><div class="t-val">Part #A-114</div></div>
-              <div class="t-field"><div class="t-fl">Good Count</div><div class="t-val" style="color:var(--green)">214</div></div>
-              <div class="t-field"><div class="t-fl">Reject Count</div><div class="t-val" style="color:var(--red)">6</div></div>
-              <div class="t-field"><div class="t-fl">Time</div><div class="t-val">10:42 AM</div></div>
-            </div>
-            <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--t3);margin:16px 0 8px">Reject Reason</div>
-            <div class="reason-btns">
-              <div class="rb sel">Bad seal</div><div class="rb unsel">Dimension</div>
-              <div class="rb unsel">Surface</div><div class="rb unsel">Other</div>
-            </div>
-          </div>
-          <div class="fp" id="p2">
-            <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--t3);margin-bottom:12px">Downtime Pareto · This week</div>
-            <div class="pareto-mini">
-              <div><div class="pm-hd"><span>Material wait</span><span style="color:var(--amber)">38% · 14.5 hrs</span></div><div class="pm-tr"><div class="pm-fl" style="width:38%;background:var(--amber)"></div></div></div>
-              <div><div class="pm-hd"><span>Setup / changeover</span><span>24% · 9.2 hrs</span></div><div class="pm-tr"><div class="pm-fl" style="width:24%;background:var(--amber);opacity:.7"></div></div></div>
-              <div><div class="pm-hd"><span>Minor jam</span><span>18% · 6.9 hrs</span></div><div class="pm-tr"><div class="pm-fl" style="width:18%;background:var(--amber);opacity:.5"></div></div></div>
-              <div><div class="pm-hd"><span>Maintenance</span><span>12% · 4.6 hrs</span></div><div class="pm-tr"><div class="pm-fl" style="width:12%;background:var(--amber);opacity:.35"></div></div></div>
-              <div><div class="pm-hd"><span>Other</span><span>8% · 3.1 hrs</span></div><div class="pm-tr"><div class="pm-fl" style="width:8%;background:var(--t3)"></div></div></div>
-            </div>
-            <div class="pm-note">↑ Material wait up 11% vs prior week</div>
-          </div>
-          <div class="fp" id="p3">
-            <div class="mini-kpis">
-              <div class="mk"><div class="mk-l">Parts</div><div class="mk-v v-blue">847</div></div>
-              <div class="mk"><div class="mk-l">Rejects</div><div class="mk-v v-red">2.4%</div></div>
-              <div class="mk"><div class="mk-l">OEE</div><div class="mk-v v-green">94%</div></div>
-            </div>
-            <div style="font-size:11px;color:var(--t3);margin-bottom:8px">Production by hour</div>
-            <div class="mini-bars">
-              <div class="mb" style="height:62%"></div><div class="mb" style="height:79%"></div>
-              <div class="mb" style="height:91%;background:var(--green)"></div><div class="mb" style="height:83%"></div>
-              <div class="mb" style="height:71%"></div><div class="mb" style="height:78%"></div>
-              <div class="mb" style="height:39%;background:var(--t3);opacity:.4"></div>
-              <div class="mb" style="height:50%;background:var(--t3);opacity:.4"></div>
-            </div>
-          </div>
-          <div class="fp" id="p4">
-            <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--t3);margin-bottom:12px">Export · Line 1 · This week</div>
-            <div class="exp-hd"><span>Date</span><span>Shift</span><span>Operator</span><span>Good</span><span>Rejects</span></div>
-            <div class="exp-row"><span>6/16</span><span>Day</span><span>J.Morales</span><span>847</span><span style="color:var(--red)">21</span></div>
-            <div class="exp-row"><span>6/16</span><span>Eve</span><span>R.Kim</span><span>712</span><span style="color:var(--red)">14</span></div>
-            <div class="exp-row"><span>6/17</span><span>Day</span><span>J.Morales</span><span>891</span><span style="color:var(--green)">8</span></div>
-            <div class="exp-row"><span>6/17</span><span>Eve</span><span>T.Davis</span><span>744</span><span style="color:var(--red)">18</span></div>
-            <div class="exp-row"><span>6/18</span><span>Day</span><span>J.Morales</span><span>866</span><span>12</span></div>
-            <div style="margin-top:14px;font-size:12px;color:var(--t3)">→ .xlsx and .csv export available anytime</div>
-          </div>
-        </div>
+      <div class="feat-card">
+        <div class="feat-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="var(--amber)" stroke-width="1.5"/><path d="M10 6V10.5l3 3" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+        <h3>Live Shift Dashboard</h3>
+        <p>Real-time visibility on any screen — tablet, laptop, or wall TV. Production vs. target, top downtime reasons, reject rate, and efficiency. All shifting as data comes in.</p>
       </div>
-    </div>
-    <!-- mobile: stacked cards -->
-    <div class="feat-mobile-stack">
-      <div class="fms-item">
-        <div class="fms-head">
-          <div class="feat-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="3" y="9" width="3" height="6" fill="var(--amber)" rx="1"/><rect x="7.5" y="6" width="3" height="9" fill="var(--amber)" rx="1"/><rect x="12" y="3" width="3" height="12" fill="var(--amber)" rx="1"/></svg></div>
-          <div class="fms-title">Tablet Production Entry</div>
-        </div>
-        <p class="fms-desc">Operators log good parts, reject parts, shift, product, and operator on a tablet during the shift — not from memory afterward. Fast buttons, simple layout, no training friction.</p>
-      </div>
-      <div class="fms-item">
-        <div class="fms-head">
-          <div class="feat-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="6" stroke="var(--amber)" stroke-width="1.5"/><path d="M9 5.5V9.5l2.5 2.5" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round"/></svg></div>
-          <div class="fms-title">Downtime Reason Buttons</div>
-        </div>
-        <p class="fms-desc">When the line stops, operators tap the reason in real time — not recalled at shift end. See a Pareto of top stop causes by shift, operator, and machine automatically.</p>
-      </div>
-      <div class="fms-item">
-        <div class="fms-head">
-          <div class="feat-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 9h12M9 3v12" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round"/><circle cx="9" cy="9" r="6" stroke="var(--amber)" stroke-width="1.5"/></svg></div>
-          <div class="fms-title">Live Dashboard</div>
-        </div>
-        <p class="fms-desc">A real-time shift dashboard on any screen — tablet, laptop, or wall TV. Production vs. target, top downtime reasons, reject rate, and efficiency by shift.</p>
-      </div>
-      <div class="fms-item">
-        <div class="fms-head">
-          <div class="feat-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="3" y="3" width="12" height="12" rx="2" stroke="var(--amber)" stroke-width="1.5"/><path d="M3 7.5h12M7.5 7.5v7.5" stroke="var(--amber)" stroke-width="1.5"/></svg></div>
-          <div class="fms-title">Export &amp; Reports</div>
-        </div>
-        <p class="fms-desc">Every entry is exportable to Excel or CSV. Daily or weekly summary reports included. A written improvement summary at pilot close — what the data shows, where to focus first.</p>
+      <div class="feat-card">
+        <div class="feat-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="3" width="14" height="14" rx="2" stroke="var(--amber)" stroke-width="1.5"/><path d="M3 8.5h14M8.5 8.5v8.5" stroke="var(--amber)" stroke-width="1.5"/></svg></div>
+        <h3>Export &amp; Written Summary</h3>
+        <p>Every entry exports to Excel or CSV on demand. At pilot close you get a written improvement summary — what the data showed, where to focus first, what to fix next.</p>
       </div>
     </div>
   </div>
@@ -1165,6 +1007,21 @@ nav, section, footer, .proof-strip, .outcome-block {
       <div class="fq"><h3>Do operators need training?</h3><p>Yes — and it's included. On-site operator training is part of every pilot. Most operators are comfortable with the tablet form within one shift.</p></div>
       <div class="fq"><h3>What does optional monthly support cover?</h3><p>Dashboard updates, new reason codes, form changes, export assistance, and a monthly data review. Not required — you own the system after the pilot.</p></div>
       <div class="fq"><h3>What area do you serve?</h3><p>DFW metro and up to 75 miles. Setup and training are on-site. Some remote configuration is possible but the kickoff and training are in person.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER CTA -->
+<section class="footer-cta-section">
+  <div class="wrap">
+    <div class="footer-cta-inner">
+      <h2 class="footer-cta-h">Ready to stop guessing<br>what's slowing your floor down?</h2>
+      <p class="footer-cta-sub">Book a 15-minute call. We'll talk about what you track today, what you're missing, and whether a one-line pilot makes sense. No pitch, no deck.</p>
+      <div class="footer-cta-btns">
+        <a href="#book" class="btn-primary">Book a Fit Call ↗</a>
+        <a href="calculator.html" class="btn-outline">Run the Downtime Calculator ↗</a>
+      </div>
+      <p class="footer-cta-note">Fixed price · DFW area · Live in 2–3 weeks</p>
     </div>
   </div>
 </section>
