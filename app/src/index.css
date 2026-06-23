@@ -1,0 +1,291 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* ── shadcn design tokens ── */
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 10% 3.9%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
+  }
+
+  * {
+    border-color: hsl(var(--border));
+  }
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+  }
+}
+
+/* ── Aurora / BackgroundScene CSS variables ── */
+:root {
+  --bg-color: #000500;
+  --light-color: #00ff7f;
+  --glow-color-1: rgba(0, 255, 127, 0.8);
+  --glow-color-2: rgba(60, 255, 157, 0.6);
+}
+
+/* ── Aurora keyframes ── */
+@keyframes rise {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-10%);
+    opacity: 0;
+  }
+}
+
+@keyframes fade {
+  0%, 100% {
+    opacity: 0;
+  }
+  5%, 80% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes floorGlow {
+  0%, 100% {
+    transform: scale(0.9);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+}
+
+@keyframes mainGlow {
+  from {
+    opacity: 0.6;
+    filter: blur(25px);
+  }
+  to {
+    opacity: 0.8;
+    filter: blur(15px);
+  }
+}
+
+@keyframes moveGrid {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: -80px -40px;
+  }
+}
+
+/* ── Scene component classes ── */
+.scene {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  background-color: var(--bg-color);
+  background-image:
+    linear-gradient(rgba(0, 255, 127, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 127, 0.03) 1px, transparent 1px);
+  background-size: 80px 40px;
+  animation: moveGrid 8s linear infinite;
+}
+
+.floor {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120%;
+  height: 200px;
+  background: radial-gradient(
+    ellipse 80% 60% at 50% 100%,
+    var(--glow-color-1) 0%,
+    var(--glow-color-2) 30%,
+    transparent 70%
+  );
+  animation: floorGlow 4s ease-in-out infinite;
+}
+
+.main-column {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 60%;
+  background: linear-gradient(
+    to top,
+    var(--glow-color-1),
+    var(--glow-color-2) 40%,
+    transparent
+  );
+  filter: blur(2px);
+  animation: mainGlow 3s ease-in-out infinite alternate;
+}
+
+.light-stream-container {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.light-beam {
+  position: absolute;
+  bottom: 0;
+  height: 30vh;
+  background: linear-gradient(
+    to top,
+    var(--glow-color-1),
+    var(--light-color) 20%,
+    transparent
+  );
+  border-radius: 2px 2px 0 0;
+  filter: blur(1px);
+  animation:
+    rise var(--rise-dur, 5s) ease-out forwards,
+    fade var(--fade-dur, 5s) ease-in-out forwards;
+}
+
+/* ── Demo layout classes ── */
+.content-wrapper {
+  position: relative;
+  z-index: 10;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 3rem;
+  border-bottom: 1px solid rgba(0, 255, 127, 0.15);
+}
+
+.logo {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--light-color);
+  text-shadow: 0 0 12px var(--glow-color-1);
+}
+
+.main-header nav {
+  display: flex;
+  gap: 2rem;
+}
+
+.main-header nav a {
+  font-size: 0.875rem;
+  color: rgba(0, 255, 127, 0.7);
+  text-decoration: none;
+  letter-spacing: 0.05em;
+  transition: color 0.2s;
+}
+
+.main-header nav a:hover {
+  color: var(--light-color);
+}
+
+.hero-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4rem 2rem;
+  gap: 1.5rem;
+}
+
+.hero-section h1 {
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+  text-shadow: 0 0 40px rgba(0, 255, 127, 0.3);
+  margin: 0;
+  line-height: 1.05;
+}
+
+.hero-section p {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  color: rgba(255, 255, 255, 0.6);
+  max-width: 560px;
+  line-height: 1.65;
+  margin: 0;
+}
+
+.cta-button {
+  margin-top: 0.5rem;
+  padding: 0.875rem 2rem;
+  background: transparent;
+  border: 1px solid var(--light-color);
+  color: var(--light-color);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(0, 255, 127, 0.2), inset 0 0 20px rgba(0, 255, 127, 0.05);
+  transition: box-shadow 0.2s, background 0.2s;
+}
+
+.cta-button:hover {
+  background: rgba(0, 255, 127, 0.08);
+  box-shadow: 0 0 40px rgba(0, 255, 127, 0.4), inset 0 0 20px rgba(0, 255, 127, 0.1);
+}
+
+@media (max-width: 640px) {
+  .main-header {
+    padding: 1rem 1.5rem;
+  }
+  .main-header nav {
+    display: none;
+  }
+}
