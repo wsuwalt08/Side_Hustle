@@ -545,9 +545,85 @@ footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 5
   .book-card { padding: 32px 20px; }
 }
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+
+/* ── Aurora background ── */
+@keyframes aurora-rise {
+  0%   { transform: translateY(100%); opacity: 0; }
+  10%  { opacity: 1; }
+  100% { transform: translateY(-10%); opacity: 0; }
+}
+@keyframes aurora-fade {
+  0%, 100% { opacity: 0; }
+  5%, 80%  { opacity: 0.6; }
+}
+@keyframes aurora-floor {
+  0%, 100% { transform: translateX(-50%) scale(0.9); opacity: 0.6; }
+  50%      { transform: translateX(-50%) scale(1.1); opacity: 0.9; }
+}
+@keyframes aurora-grid {
+  from { background-position: 0 0; }
+  to   { background-position: -80px -40px; }
+}
+#aurora-scene {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(rgba(245,158,11,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(245,158,11,0.025) 1px, transparent 1px);
+  background-size: 80px 40px;
+  animation: aurora-grid 10s linear infinite;
+}
+#aurora-floor {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120%;
+  height: 220px;
+  background: radial-gradient(ellipse 80% 60% at 50% 100%,
+    rgba(245,158,11,0.35) 0%,
+    rgba(245,158,11,0.15) 30%,
+    transparent 70%);
+  animation: aurora-floor 5s ease-in-out infinite;
+}
+.aurora-beam {
+  position: absolute;
+  bottom: 0;
+  height: 35vh;
+  background: linear-gradient(to top, rgba(245,158,11,0.7), rgba(245,158,11,0.4) 20%, transparent);
+  border-radius: 2px 2px 0 0;
+  filter: blur(1px);
+  animation:
+    aurora-rise var(--rd, 5s) ease-out forwards,
+    aurora-fade var(--rd, 5s) ease-in-out forwards;
+}
 </style>
 </head>
 <body>
+
+<!-- Aurora background scene -->
+<div id="aurora-scene" aria-hidden="true">
+  <div id="aurora-floor"></div>
+</div>
+<script>
+(function(){
+  var scene = document.getElementById('aurora-scene');
+  for(var i = 0; i < 55; i++){
+    var b = document.createElement('div');
+    b.className = 'aurora-beam';
+    var dur = (Math.random()*2+4).toFixed(2)+'s';
+    b.style.cssText = 'left:'+( Math.random()*100).toFixed(1)+'%;'
+      +'width:'+(Math.floor(Math.random()*3)+1)+'px;'
+      +'animation-delay:'+(Math.random()*6).toFixed(2)+'s;'
+      +'--rd:'+dur+';';
+    scene.appendChild(b);
+  }
+})();
+</script>
 
 <!-- NAV -->
 <nav>
