@@ -554,7 +554,7 @@ input[type=range]::-moz-range-thumb {
       <!-- CTA -->
       <div class="cta-card">
         <p id="cta-text">Move the sliders to match your shop — your personalized call-to-action appears here.</p>
-        <button class="cta-btn" id="cta-btn" onclick="window.location.href='mailto:hello@tracemfg.com?subject=Fit call request&body=My estimated weekly production loss is ' + document.getElementById('meter-weekly').innerText">
+        <button class="cta-btn" id="cta-btn" onclick="window.location.href='mailto:robisonw08@gmail.com?subject=Fit call request&body=My estimated weekly production loss is ' + document.getElementById('meter-weekly').innerText">
           Book a Call — Recover Your Losses
         </button>
         <div class="cta-note">15 minutes · No pitch deck · DFW area</div>
@@ -739,12 +739,12 @@ function recalc() {
     ctaText.innerHTML = `Your shop is losing an estimated <strong>${lossStr}/week</strong> — <strong>${annualStr}/year</strong> — in untracked downtime and scrap. A one-line pilot typically pays for itself in ${paybackWeeks} weeks.`;
     ctaBtn.textContent = `Book a Call — Recover ${fmt(recoverable)}`;
     ctaBtn.onclick = () => {
-      window.location.href = `mailto:hello@tracemfg.com?subject=Fit call request — ${lossStr}/week loss&body=Hello, I used the downtime calculator and my estimated weekly production loss is ${lossStr}. I'd like to book a 15-minute fit call.`;
+      window.location.href = `mailto:robisonw08@gmail.com?subject=Fit call request — ${lossStr}/week loss&body=Hello, I used the downtime calculator and my estimated weekly production loss is ${lossStr}. I'd like to book a 15-minute fit call.`;
     };
   } else {
     ctaText.innerHTML = `Move the sliders to match your shop and see your personalized loss estimate and payback period.`;
     ctaBtn.textContent = `Book a 15-Minute Fit Call`;
-    ctaBtn.onclick = () => { window.location.href = 'mailto:hello@tracemfg.com'; };
+    ctaBtn.onclick = () => { window.location.href = 'mailto:robisonw08@gmail.com'; };
   }
 }
 
