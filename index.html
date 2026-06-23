@@ -546,6 +546,12 @@ footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 5
 }
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
 
+/* Lift all page content above the aurora layer */
+nav, section, footer, .proof-strip, .outcome-block {
+  position: relative;
+  z-index: 1;
+}
+
 /* ── Aurora background ── */
 @keyframes aurora-rise {
   0%   { transform: translateY(100%); opacity: 0; }
@@ -570,6 +576,7 @@ footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 5
   z-index: 0;
   overflow: hidden;
   pointer-events: none;
+  background-color: transparent;
   background-color: var(--bg);
   background-image:
     linear-gradient(rgba(245,158,11,0.025) 1px, transparent 1px),
