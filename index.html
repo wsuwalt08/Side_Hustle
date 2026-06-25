@@ -71,8 +71,10 @@ nav {
   background: var(--amber); color: #06111E;
   font-family: 'Space Grotesk', sans-serif;
   font-size: 14px; font-weight: 700;
-  padding: 9px 20px; border-radius: 7px; text-decoration: none;
-  transition: opacity .15s; box-shadow: 0 2px 14px rgba(34,211,238,.3);
+  padding: 10px 22px; border-radius: 8px; text-decoration: none;
+  transition: opacity .15s;
+  box-shadow: 0 0 0 2px rgba(34,211,238,.35), 0 4px 20px rgba(34,211,238,.4);
+  letter-spacing: 0.01em;
 }
 .btn-cta:hover { opacity: .88; }
 
@@ -546,8 +548,9 @@ footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 5
   .offer-card { grid-template-columns: 1fr; }
   .faq-grid { grid-template-columns: 1fr; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
-  /* hide desktop nav links, show hamburger */
+  /* hide desktop nav links, show hamburger — keep Book a Call visible */
   .nav-links a:not(.btn-cta) { display: none; }
+  .nav-links .btn-cta { font-size: 13px; padding: 9px 16px; }
   .nav-hamburger { display: flex; }
 }
 @media (max-width: 600px) {
@@ -679,7 +682,6 @@ nav, section, footer, .proof-strip, .outcome-block {
   <div class="hero-content">
     <div class="wrap" style="flex:1;display:flex;flex-direction:column">
       <div class="hero-center">
-        <div class="hero-tag"><span class="dot"></span>Fixed-price pilot · DFW area · No sensors required</div>
         <h1>Find hidden losses on your shop floor — <em>fast.</em></h1>
         <p class="hero-sub">Tablet-based production tracking and a live dashboard for one machine, line, or process. No MES. No sensors. No IT project. Fixed price.</p>
         <div class="check-row">
